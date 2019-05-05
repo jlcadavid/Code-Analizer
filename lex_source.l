@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>		
 #include <math.h>
+#include "y.tab.h"	// GENERADO POR yacc -d
 
 int _lineno = 1;
 int token_index = 0;
@@ -12,6 +13,7 @@ char errs[100000];
 
 DIGITO		[0-9]
 LETRA		[a-zA-Z\242-\377]
+NOMBRE_F	({LETRA}|_)+
 ALFA		{LETRA}|{DIGITO}
 ENTERO		{DIGITO}+
 EXPONENTE	[eE][+-]?{ENTERO}
@@ -26,68 +28,65 @@ BOOLEANO	true|false
 ERROR		({ENTERO}|{REAL}|{CADENA}|{COMENTARIO}|{COMENTARIOS}|%|:|_|[--]|[++])+{ID}
 %%
 
-"Main"|"main"	{ printf("MAIN "); }
-"void"		{ printf("VOID "); }
-"if"		{ printf("SI "); }
-"else"		{ printf("SINO "); }
-"for"		{ printf("PARA "); }
-"do"		{ printf("HACER "); }
-"while"		{ printf("MIENTRAS QUE "); }
-"switch"	{ printf("DEPENDIENDO DE "); }
-"case"		{ printf("CASO "); }
-"default"	{ printf("POR DEFECTO "); }
-"break"		{ printf("DETENER "); }
-"int"		{ printf("ENTERO "); }
-"float"		{ printf("REAL "); }
-"char"		{ printf("CARACTER "); }
-"printf"	{ printf("ESCRIBIR "); }
-"scanf"		{ printf("LEER "); }
-"return"	{ printf("RETORNA "); }
-
-"<--"		{ printf("op-asign= <-- "); }
-"+" 		{ printf("op-sum= + "); }
-"++"		{ printf("op-sumcont= ++ "); }
-"-" 		{ printf("op-sust= - "); }
-"--"		{ printf("op-sustcont= -- "); }
-"*" 		{ printf("op-mult= * "); }
-"/" 		{ printf("op-div= / "); }
-"%"		{ char a[5]; strcpy(a, "%"); printf(" op-mod= %s ", a); }
-"^" 		{ printf("op-exp= ^ "); }
-"="		{ printf("op-igual= = "); }
-"!"		{ printf("op-neg= ! "); }
-"<="		{ printf("op-men-ig= <= "); }
-">="		{ printf("op-may-ig= >= "); }
-"!="		{ printf("op-difer= != "); }
-"=="		{ printf("op-comp= == "); }
-"<>"		{ printf("op-difer= <> "); }
-">"		{ printf("op-mayor= > "); }
-"<"		{ printf("op-menor= < "); }
-"&"		{ printf("op-y= & "); }
-"&&"		{ printf("op-comp-y= && "); }
-"|"		{ printf("op-o= | "); }
-"||"		{ printf("op-comp-o= || "); }
-
-"\("		{ printf("parent-a= ( "); }
-"\)"		{ printf("parent-c= ) "); }
-"{"		{ printf("inicio= { "); }
-"}"		{ printf("fin= } "); }
-"["		{ printf("corch-a= [ "); }
-"]"		{ printf("corch-c= ] "); }
-":"		{ printf("doble-punto= : "); }
-";"		{ printf("punto-coma= ; "); }
-","		{ printf("coma= , "); }
-"\."		{ printf("punto= ."); }
-
-"\n"		{ printf("\n"); ++_lineno; }
-"\t"		{ printf("\t"); ++_lineno; }
+"void"		{ fprintf(yyout, " VOID "); 		return VACIO; 		}
+"if"		{ fprintf(yyout, " SI "); 		return SI; 		}
+"else"		{ fprintf(yyout, " SINO "); 		return SINO; 		}
+"for"		{ fprintf(yyout, " PARA "); 		return PARA; 		}
+"do"		{ fprintf(yyout, " HACER ");		return HACER; 		}
+"while"		{ fprintf(yyout, " MIENTRAS QUE "); 	return MIENTRAS; 	}
+"switch"	{ fprintf(yyout, " DEPENDIENDO DE "); 	return DEPENDIENDO_DE; 	}
+"case"		{ fprintf(yyout, " CASO "); 		return CASO; 		}
+"default"	{ fprintf(yyout, " POR DEFECTO ");	return POR_DEFECTO; 	}
+"break"		{ fprintf(yyout, " DETENER "); 		return INTERRUMPIR; 	}
+"int"		{ fprintf(yyout, " ENTERO "); 		return ENTERO; 		}
+"float"		{ fprintf(yyout, " REAL "); 		return REAL; 		}
+"char"		{ fprintf(yyout, " CARACTER "); 	return CARACTER; 	}
+"printf"	{ fprintf(yyout, " ESCRIBIR "); 	return ESCRIBIR; 	}
+"scanf"		{ fprintf(yyout, " LEER "); 		return LEER; 		}
+"return"	{ fprintf(yyout, " RETORNA "); 		return RETORNAR; 	}
+{NOMBRE_F}	{ fprintf(yyout, " NOM_FUN "); 		return NOM_FUN; 	}
+"<--"		{ fprintf(yyout, "op-asign= <-- "); 	return ASIGNAR; 	}
+"+" 		{ fprintf(yyout, "op-sum= + "); 	return SUMAR; 		}
+"++"		{ fprintf(yyout, "op-sumcont= ++ "); 	return SUMAR_1; 	}
+"-" 		{ fprintf(yyout, "op-sust= - "); 	return RESTAR; 		}
+"--"		{ fprintf(yyout, "op-sustcont= -- "); 	return RESTAR_1; 	}
+"*" 		{ fprintf(yyout, "op-mult= * "); 	return MULTIPLICAR; 	}
+"/" 		{ fprintf(yyout, "op-div= / "); 	return DIVIDIR 		}
+"%"		{ fprintf(yyout, "op-mod= %% "); 	return MODULO; 		}
+"^" 		{ fprintf(yyout, "op-exp= ^ "); 	return POTENCIA; 	}
+"="		{ fprintf(yyout, "op-igual= = "); 	return ASIGNAR;		}
+"!"		{ fprintf(yyout, "op-neg= ! "); 	return NEGAR;		}
+"<="		{ fprintf(yyout, "op-men-ig= <= "); 	return MENOR_IGUAL_QUE;	}
+">="		{ fprintf(yyout, "op-may-ig= >= "); 	return MAYOR_IGUAL_QUE;	}
+"!="		{ fprintf(yyout, "op-difer= != "); 	return DIFERENTE_DE;	}
+"=="		{ fprintf(yyout, "op-comp= == "); 	return IGUAL_QUE;	}
+"<>"		{ fprintf(yyout, "op-difer= <> "); 	return DIFERENTE_DE;	}
+">"		{ fprintf(yyout, "op-mayor= > "); 	return MAYOR_QUE;	}
+"<"		{ fprintf(yyout, "op-menor= < "); 	return MENOR_QUE;	}
+"&"		{ fprintf(yyout, "op-y= & "); 		return Y;		}
+"&&"		{ fprintf(yyout, "op-comp-y= && "); 	return Y;		}
+"|"		{ fprintf(yyout, "op-o= | "); 		return O;		}
+"||"		{ fprintf(yyout, "op-comp-o= || "); 	return O;		}
+"\("		{ fprintf(yyout, "parent-a= ( "); 	return PAR_IZQ;		}
+"\)"		{ fprintf(yyout, "parent-c= ) "); 	return PAR_DER;		}
+"{"		{ fprintf(yyout, "inicio= { "); 	return LLA_IZQ;		}
+"}"		{ fprintf(yyout, "fin= } "); 		return LLA_DER;		}
+"["		{ fprintf(yyout, "corch-a= [ "); 	return COR_IZQ;		}
+"]"		{ fprintf(yyout, "corch-c= ] "); 	return COR_DER;		}
+":"		{ fprintf(yyout, "doble-punto= : "); 	return ASIGNAR;		}
+";"		{ fprintf(yyout, "punto-coma= ; "); 	return FIN_DCL;		}
+","		{ fprintf(yyout, "coma= , "); 		return COMA;		}
+"\."		{ fprintf(yyout, "punto= ."); 		/* NO ES UTIL */	}
+"\n"		{ fprintf(yyout, "\n"); ++_lineno; 	/* NO ES UTIL */	}
+"\t"		{ fprintf(yyout, "\t"); ++_lineno; 	/* NO ES UTIL */	}
 [ ]		;
 
-{COMENTARIOS}	{ printf("cte-comentarios= %s ", yytext); }
-{COMENTARIO}	{ printf("cte-comentario= %s ", yytext); }
-{CADENA}	{ printf("cte-cadena= %s ", yytext); }
-{BOOLEANO}	{ printf ("cte-booleano= %s ", yytext); }
-{ENTERO}	{ printf("cte-entero= %s ", yytext); }
-{REAL}		{ printf("cte-real= %s ", yytext); }
+{COMENTARIOS}	{ fprintf(yyout, "cte-comentarios= %s ", yytext); }
+{COMENTARIO}	{ fprintf(yyout, "cte-comentario= %s ", yytext); }
+{CADENA}	{ fprintf(yyout, "cte-cadena= %s ", yytext);	return V_CADENA;}
+{BOOLEANO}	{ printf ("cte-booleano= %s ", yytext); 	return BOOLEANO;}
+{ENTERO}	{ fprintf(yyout, "cte-entero= %s ", yytext); 	return V_ENTERO;}
+{REAL}		{ fprintf(yyout, "cte-real= %s ", yytext); 	return V_REAL;	}
 {ID}		{ 
 			printf("ID: %s ", yytext);			
 			char *result = malloc(strlen("ID: ") +strlen(yytext) +strlen("\t") +1);
@@ -97,6 +96,7 @@ ERROR		({ENTERO}|{REAL}|{CADENA}|{COMENTARIO}|{COMENTARIOS}|%|:|_|[--]|[++])+{ID
 			if(!strstr(tokens, result)){
 				strcat(tokens, result);			
 			}
+			return ID;
 		}
 {ERROR}		{ 
 			printf("\nERROR EN LINEA %d, EN %s\n", _lineno, yytext); 
@@ -110,6 +110,7 @@ ERROR		({ENTERO}|{REAL}|{CADENA}|{COMENTARIO}|{COMENTARIOS}|%|:|_|[--]|[++])+{ID
 			strcat(result, "\n");
 			strcat(errs, result);		
 			++_lineno; 
+			return L_ERROR;
 		}
 
 .		{ 
@@ -126,20 +127,3 @@ ERROR		({ENTERO}|{REAL}|{CADENA}|{COMENTARIO}|{COMENTARIOS}|%|:|_|[--]|[++])+{ID
 			++_lineno; 
 		}
 %%
-
-int main(int argc, char *argv[]){
-/*	if(tokens != NULL){
-		printf("Memory allocated!\n\n");
-	}
-*/
-	++argv, --argc;
-	if(argc > 0){
-		yyin = fopen(argv[0], "r");
-	}else{
-		yyin = stdin;	
-	}
-	yylex();
-	printf("\n\nIDENTIFICADORES\n%s", tokens);
-	printf("\n\nERRORES:\n%s", errs);
-	return 0;
-}
