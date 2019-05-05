@@ -1,5 +1,6 @@
+#line 2 "Lex/lex.yy.c"
 
-#line 3 "lex.yy.c"
+#line 4 "Lex/lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -808,8 +809,8 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "regex.l"
-#line 2 "regex.l"
+#line 1 "Lex/lex.l"
+#line 2 "Lex/lex.l"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>		
@@ -819,8 +820,8 @@ int _lineno = 1;
 int token_index = 0;
 char tokens[10000];
 char errs[100000];
-#line 823 "lex.yy.c"
-#line 824 "lex.yy.c"
+#line 824 "Lex/lex.yy.c"
+#line 825 "Lex/lex.yy.c"
 
 #define INITIAL 0
 
@@ -1037,10 +1038,10 @@ YY_DECL
 		}
 
 	{
-#line 27 "regex.l"
+#line 27 "Lex/lex.l"
 
 
-#line 1044 "lex.yy.c"
+#line 1045 "Lex/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1099,299 +1100,299 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 29 "regex.l"
+#line 29 "Lex/lex.l"
 { printf("MAIN "); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 30 "regex.l"
+#line 30 "Lex/lex.l"
 { printf("VOID "); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 31 "regex.l"
+#line 31 "Lex/lex.l"
 { printf("SI "); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 32 "regex.l"
+#line 32 "Lex/lex.l"
 { printf("SINO "); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 33 "regex.l"
+#line 33 "Lex/lex.l"
 { printf("PARA "); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 34 "regex.l"
+#line 34 "Lex/lex.l"
 { printf("HACER "); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 35 "regex.l"
+#line 35 "Lex/lex.l"
 { printf("MIENTRAS QUE "); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 36 "regex.l"
+#line 36 "Lex/lex.l"
 { printf("DEPENDIENDO DE "); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 37 "regex.l"
+#line 37 "Lex/lex.l"
 { printf("CASO "); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 38 "regex.l"
+#line 38 "Lex/lex.l"
 { printf("POR DEFECTO "); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 39 "regex.l"
+#line 39 "Lex/lex.l"
 { printf("DETENER "); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 40 "regex.l"
+#line 40 "Lex/lex.l"
 { printf("ENTERO "); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 41 "regex.l"
+#line 41 "Lex/lex.l"
 { printf("REAL "); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 42 "regex.l"
+#line 42 "Lex/lex.l"
 { printf("CARACTER "); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 43 "regex.l"
+#line 43 "Lex/lex.l"
 { printf("ESCRIBIR "); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 44 "regex.l"
+#line 44 "Lex/lex.l"
 { printf("LEER "); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 45 "regex.l"
+#line 45 "Lex/lex.l"
 { printf("RETORNA "); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 47 "regex.l"
+#line 47 "Lex/lex.l"
 { printf("op-asign= <-- "); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 48 "regex.l"
+#line 48 "Lex/lex.l"
 { printf("op-sum= + "); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 49 "regex.l"
+#line 49 "Lex/lex.l"
 { printf("op-sumcont= ++ "); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 50 "regex.l"
+#line 50 "Lex/lex.l"
 { printf("op-sust= - "); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 51 "regex.l"
+#line 51 "Lex/lex.l"
 { printf("op-sustcont= -- "); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 52 "regex.l"
+#line 52 "Lex/lex.l"
 { printf("op-mult= * "); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 53 "regex.l"
+#line 53 "Lex/lex.l"
 { printf("op-div= / "); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 54 "regex.l"
+#line 54 "Lex/lex.l"
 { char a[5]; strcpy(a, "%"); printf(" op-mod= %s ", a); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 55 "regex.l"
+#line 55 "Lex/lex.l"
 { printf("op-exp= ^ "); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 56 "regex.l"
+#line 56 "Lex/lex.l"
 { printf("op-igual= = "); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 57 "regex.l"
+#line 57 "Lex/lex.l"
 { printf("op-neg= ! "); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 58 "regex.l"
+#line 58 "Lex/lex.l"
 { printf("op-men-ig= <= "); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 59 "regex.l"
+#line 59 "Lex/lex.l"
 { printf("op-may-ig= >= "); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 60 "regex.l"
+#line 60 "Lex/lex.l"
 { printf("op-difer= != "); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 61 "regex.l"
+#line 61 "Lex/lex.l"
 { printf("op-comp= == "); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 62 "regex.l"
+#line 62 "Lex/lex.l"
 { printf("op-difer= <> "); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 63 "regex.l"
+#line 63 "Lex/lex.l"
 { printf("op-mayor= > "); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 64 "regex.l"
+#line 64 "Lex/lex.l"
 { printf("op-menor= < "); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 65 "regex.l"
+#line 65 "Lex/lex.l"
 { printf("op-y= & "); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 66 "regex.l"
+#line 66 "Lex/lex.l"
 { printf("op-comp-y= && "); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 67 "regex.l"
+#line 67 "Lex/lex.l"
 { printf("op-o= | "); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 68 "regex.l"
+#line 68 "Lex/lex.l"
 { printf("op-comp-o= || "); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 70 "regex.l"
+#line 70 "Lex/lex.l"
 { printf("parent-a= ( "); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 71 "regex.l"
+#line 71 "Lex/lex.l"
 { printf("parent-c= ) "); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 72 "regex.l"
+#line 72 "Lex/lex.l"
 { printf("inicio= { "); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 73 "regex.l"
+#line 73 "Lex/lex.l"
 { printf("fin= } "); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 74 "regex.l"
+#line 74 "Lex/lex.l"
 { printf("corch-a= [ "); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 75 "regex.l"
+#line 75 "Lex/lex.l"
 { printf("corch-c= ] "); }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 76 "regex.l"
+#line 76 "Lex/lex.l"
 { printf("doble-punto= : "); }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 77 "regex.l"
+#line 77 "Lex/lex.l"
 { printf("punto-coma= ; "); }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 78 "regex.l"
+#line 78 "Lex/lex.l"
 { printf("coma= , "); }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 79 "regex.l"
+#line 79 "Lex/lex.l"
 { printf("punto= ."); }
 	YY_BREAK
 case 50:
 /* rule 50 can match eol */
 YY_RULE_SETUP
-#line 81 "regex.l"
+#line 81 "Lex/lex.l"
 { printf("\n"); ++_lineno; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 82 "regex.l"
+#line 82 "Lex/lex.l"
 { printf("\t"); ++_lineno; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 83 "regex.l"
+#line 83 "Lex/lex.l"
 ;
 	YY_BREAK
 case 53:
 /* rule 53 can match eol */
 YY_RULE_SETUP
-#line 85 "regex.l"
+#line 85 "Lex/lex.l"
 { printf("cte-comentarios= %s ", yytext); }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 86 "regex.l"
+#line 86 "Lex/lex.l"
 { printf("cte-comentario= %s ", yytext); }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 87 "regex.l"
+#line 87 "Lex/lex.l"
 { printf("cte-cadena= %s ", yytext); }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 88 "regex.l"
+#line 88 "Lex/lex.l"
 { printf ("cte-booleano= %s ", yytext); }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 89 "regex.l"
+#line 89 "Lex/lex.l"
 { printf("cte-entero= %s ", yytext); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 90 "regex.l"
+#line 90 "Lex/lex.l"
 { printf("cte-real= %s ", yytext); }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 91 "regex.l"
+#line 91 "Lex/lex.l"
 { 
 			printf("ID: %s ", yytext);			
 			char *result = malloc(strlen("ID: ") +strlen(yytext) +strlen("\t") +1);
@@ -1406,7 +1407,7 @@ YY_RULE_SETUP
 case 60:
 /* rule 60 can match eol */
 YY_RULE_SETUP
-#line 101 "regex.l"
+#line 101 "Lex/lex.l"
 { 
 			printf("\nERROR EN LINEA %d, EN %s\n", _lineno, yytext); 
 			char str[12];
@@ -1423,7 +1424,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 115 "regex.l"
+#line 115 "Lex/lex.l"
 { 
 			printf("\nERROR EN LINEA %d, EN %s\n", _lineno, yytext); 
 			char str[12];
@@ -1440,10 +1441,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 128 "regex.l"
+#line 128 "Lex/lex.l"
 ECHO;
 	YY_BREAK
-#line 1447 "lex.yy.c"
+#line 1448 "Lex/lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2448,7 +2449,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 128 "regex.l"
+#line 128 "Lex/lex.l"
 
 
 int main(int argc, char *argv[]){
