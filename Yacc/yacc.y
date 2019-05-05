@@ -9,7 +9,7 @@ void updateSymbolVal(char symbol, int val);
 
 %union {int mInt; float mDouble; char mChar[]; bool mBool;}
 %start mProgram
-%token LIBRARY
+%token mLibrary
 %token VOID
 %token MAIN
 %token PRINT
@@ -64,16 +64,22 @@ void updateSymbolVal(char symbol, int val);
 
 /* DESCRIPTIONS OF EXPECTED INPUTS		CORRESPONDING ACTIONS (IN C) */
 
-mProgram	: mLibraries mDeclarations mFunctions
+mProgram	: mLibraries mOpDeclarations mFunctions
 		| mDeclarations mFunctions
 		;
 
-mLibraries	: mLibrary
-		| mLibraries mLibrary
+mDeclaration	: mType mID '=' mDecList ';';
+
+mOpDeclarations : /* NULL */
+		| mDeclarations
 		;
 
 mDeclarations	: mDeclaration
 		| mDeclarations mDeclaration
+		;
+
+mLibraries	: mLibrary
+		| mLibraries mLibrary
 		;
 
 LINE	: ASSIGNMENT ';'		{ ; }
@@ -84,3 +90,4 @@ LINE	: ASSIGNMENT ';'		{ ; }
 	| LINE SCAN ';'			{ scanf(); }
 	| IF COMPARISSON LINE		{ if($2) { $3 } }
 	| IF COMPARISSON LINE ELSE LINE	{ if($2) { $3 } else { $5 } }
+	;
