@@ -8,3 +8,79 @@ void updateSymbolVal(char symbol, int val);
 %}
 
 %union {int mInt; float mDouble; char mChar[]; bool mBool;}
+%start mProgram
+%token LIBRARY
+%token VOID
+%token MAIN
+%token PRINT
+%token SCAN
+%token ARGS
+%token RETURN
+
+%token IF
+%token ELSE
+%token WHILE
+%token DO
+%token FOR
+%token SWITCH
+%token CASE
+%token DEFAULT
+%token BREAK
+
+%token PRIMITIVE
+%token ID
+%token CTE_INT
+%token CTE_FLOAT
+%token CTE_STRING
+%token CTE_BOOL
+
+%token OP_AND
+%token OP_OR
+%token OP_EQ
+%token OP_NEQ
+%token OP_LEQ
+%token OP_GEQ
+%token OP_INCREMENT 
+%token OP_DECREMENT
+
+%token '='
+%token '('
+%token ')'
+%token '*'
+%token '+'
+%token '-'
+%token '/'
+%token '^'
+%token '%'
+%token '!'
+%token '>'
+%token '<'
+%token '{'
+%token '}'
+%token ';'
+%token ','
+
+%%
+
+/* DESCRIPTIONS OF EXPECTED INPUTS		CORRESPONDING ACTIONS (IN C) */
+
+mProgram	: mLibraries mDeclarations mFunctions
+		| mDeclarations mFunctions
+		;
+
+mLibraries	: mLibrary
+		| mLibraries mLibrary
+		;
+
+mDeclarations	: mDeclaration
+		| mDeclarations mDeclaration
+		;
+
+LINE	: ASSIGNMENT ';'		{ ; }
+	| LINE ASSIGNMENT ';'		{ ; }
+	| PRINT EXP ';'			{ printf("%d\n", $2); }
+	| LINE PRINT EXP ';'		{ printf("%d\n", $3); }
+	| SCAN ';'			{ scanf(); }
+	| LINE SCAN ';'			{ scanf(); }
+	| IF COMPARISSON LINE		{ if($2) { $3 } }
+	| IF COMPARISSON LINE ELSE LINE	{ if($2) { $3 } else { $5 } }
