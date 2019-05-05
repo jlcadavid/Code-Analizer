@@ -1,0 +1,3 @@
+# YACC AND LEX FILE ANALIZER.
+
+- we need a bash script for simple usage...
