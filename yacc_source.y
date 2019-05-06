@@ -4,9 +4,12 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <ctype.h>
+#include <string.h>
 
 int err_c = 0;
 int err_l = 0;
+int can_write = 0;
+char * errs[100];
 void print();
 %}
 
@@ -92,7 +95,8 @@ STOP: E_O_F {
 				if(err_c == 0){
 					print("NO SE HAN PRESENTADO ERRORES!", 1);		
 				}
-				exit(1); 
+				can_write = 1;
+				return 0;
 			}
 	;
 
@@ -258,30 +262,45 @@ void yyerror(char *s) {
 }
 
 void print(char *t, int o){
+	char* result; 
 	if(o == 0){
-		fprintf(stdout, "%s%d\n", t, (yylineno));
+		sprintf(result, "%s%d\n", t, (yylineno));
+		errs[err_c] = malloc(strlen(result) +1); 
+		strcpy(errs[err_c], result);
 	}
 	if(o == 1){
-		fprintf(stdout, "%s\n", t);
+		sprintf(result, "%s\n", t);
+		errs[err_c] = malloc(strlen(result) +1); 
+		strcpy(errs[err_c], result);
 	}
 }
 
 int main(int argc, char *argv[]) {
 	printf("Input: %s\n", argv[1]);
 	FILE *fp = fopen(argv[1], "r");
-	FILE *lex_out_file = fopen("salida_lex.txt", "w"); // write only
-	//FILE *yacc_out_file = open("salida_yacc.txt", "w"); // write only 
+	FILE *lex_out_file = fopen("salida_lex.txt", "w"); // write only 
 	if (!fp) {
 		fprintf(lex_out_file,"\nNo se encuentra el archivo...\n");
-		//fprintf(yacc_out_file,"\nNo se encuentra el archivo...\n");
 		return(-1);
 	}
 	yyin = fp;
 	yyout = lex_out_file;
+	//printf("ANTES\n");
 	yyparse();
+	//printf("DESPUES\n");
 	fclose(lex_out_file);
 	fclose(fp);
-	//fclose(yacc_out_file);
+	if(can_write == 1){
+		FILE *yacc_out_file = fopen("salida_yacc.txt", "w"); // write only
+		if(!yacc_out_file){
+			printf("\nKELLY...\n");
+			exit(EXIT_FAILURE);	
+		}		
+		for(int i = 0; i < err_c; i++){
+			fprintf(yacc_out_file, "%s", errs[i]);
+		}
+		fclose(yacc_out_file);	
+	}	
 	return(0);
 }
 

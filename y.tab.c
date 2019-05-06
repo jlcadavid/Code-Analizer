@@ -68,12 +68,15 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <ctype.h>
+#include <string.h>
 
 int err_c = 0;
 int err_l = 0;
+int can_write = 0;
+char * errs[100];
 void print();
 
-#line 77 "y.tab.c" /* yacc.c:339  */
+#line 80 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -248,7 +251,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 252 "y.tab.c" /* yacc.c:358  */
+#line 255 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -553,18 +556,18 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    89,    89,    91,    99,    99,    99,   101,   101,   103,
-     103,   103,   103,   105,   106,   109,   111,   111,   113,   114,
-     117,   118,   121,   122,   123,   124,   125,   126,   127,   130,
-     130,   132,   134,   136,   136,   138,   139,   140,   141,   144,
-     145,   146,   147,   150,   152,   154,   155,   156,   157,   158,
-     159,   160,   163,   163,   165,   166,   167,   168,   169,   170,
-     173,   174,   175,   176,   177,   178,   181,   182,   185,   185,
-     187,   188,   191,   192,   195,   197,   197,   199,   199,   201,
-     201,   203,   205,   205,   207,   207,   210,   212,   214,   216,
-     218,   220,   220,   222,   222,   224,   224,   226,   228,   230,
-     230,   232,   234,   234,   236,   237,   238,   241,   243,   243,
-     245,   245
+       0,    92,    92,    94,   103,   103,   103,   105,   105,   107,
+     107,   107,   107,   109,   110,   113,   115,   115,   117,   118,
+     121,   122,   125,   126,   127,   128,   129,   130,   131,   134,
+     134,   136,   138,   140,   140,   142,   143,   144,   145,   148,
+     149,   150,   151,   154,   156,   158,   159,   160,   161,   162,
+     163,   164,   167,   167,   169,   170,   171,   172,   173,   174,
+     177,   178,   179,   180,   181,   182,   185,   186,   189,   189,
+     191,   192,   195,   196,   199,   201,   201,   203,   203,   205,
+     205,   207,   209,   209,   211,   211,   214,   216,   218,   220,
+     222,   224,   224,   226,   226,   228,   228,   230,   232,   234,
+     234,   236,   238,   238,   240,   241,   242,   245,   247,   247,
+     249,   249
 };
 #endif
 
@@ -1582,30 +1585,31 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-#line 91 "yacc_source.y" /* yacc.c:1646  */
+#line 94 "yacc_source.y" /* yacc.c:1646  */
     { 
 				if(err_c == 0){
 					print("NO SE HAN PRESENTADO ERRORES!", 1);		
 				}
-				exit(1); 
+				can_write = 1;
+				return 0;
 			}
-#line 1593 "y.tab.c" /* yacc.c:1646  */
+#line 1597 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 111 "yacc_source.y" /* yacc.c:1646  */
+#line 115 "yacc_source.y" /* yacc.c:1646  */
     { print("ERROR LEXICO EN LA LINEA: ", 0); err_c++; err_l++; }
-#line 1599 "y.tab.c" /* yacc.c:1646  */
+#line 1603 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 111:
-#line 245 "yacc_source.y" /* yacc.c:1646  */
+#line 249 "yacc_source.y" /* yacc.c:1646  */
     { print("ERROR LEXICO EN LA LINEA: ", 0); err_c++; err_l++; }
-#line 1605 "y.tab.c" /* yacc.c:1646  */
+#line 1609 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1609 "y.tab.c" /* yacc.c:1646  */
+#line 1613 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1840,7 +1844,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 248 "yacc_source.y" /* yacc.c:1906  */
+#line 252 "yacc_source.y" /* yacc.c:1906  */
  
 
 extern int yylex();
@@ -1854,30 +1858,45 @@ void yyerror(char *s) {
 }
 
 void print(char *t, int o){
+	char* result; 
 	if(o == 0){
-		fprintf(stdout, "%s%d\n", t, (yylineno));
+		sprintf(result, "%s%d\n", t, (yylineno));
+		errs[err_c] = malloc(strlen(result) +1); 
+		strcpy(errs[err_c], result);
 	}
 	if(o == 1){
-		fprintf(stdout, "%s\n", t);
+		sprintf(result, "%s\n", t);
+		errs[err_c] = malloc(strlen(result) +1); 
+		strcpy(errs[err_c], result);
 	}
 }
 
 int main(int argc, char *argv[]) {
 	printf("Input: %s\n", argv[1]);
 	FILE *fp = fopen(argv[1], "r");
-	FILE *lex_out_file = fopen("salida_lex.txt", "w"); // write only
-	//FILE *yacc_out_file = open("salida_yacc.txt", "w"); // write only 
+	FILE *lex_out_file = fopen("salida_lex.txt", "w"); // write only 
 	if (!fp) {
 		fprintf(lex_out_file,"\nNo se encuentra el archivo...\n");
-		//fprintf(yacc_out_file,"\nNo se encuentra el archivo...\n");
 		return(-1);
 	}
 	yyin = fp;
 	yyout = lex_out_file;
+	//printf("ANTES\n");
 	yyparse();
+	//printf("DESPUES\n");
 	fclose(lex_out_file);
 	fclose(fp);
-	//fclose(yacc_out_file);
+	if(can_write == 1){
+		FILE *yacc_out_file = fopen("salida_yacc.txt", "w"); // write only
+		if(!yacc_out_file){
+			printf("\nKELLY...\n");
+			exit(EXIT_FAILURE);	
+		}		
+		for(int i = 0; i < err_c; i++){
+			fprintf(yacc_out_file, "%s", errs[i]);
+		}
+		fclose(yacc_out_file);	
+	}	
 	return(0);
 }
 

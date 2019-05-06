@@ -91,8 +91,8 @@ FALSO		False|false
 {COMENTARIOS}	;
 {COMENTARIO}	;
 {CADENA}	{ fprintf(yyout, " STRING(%s) ", yytext);	return V_CADENA;}
-{REAL}		{ fprintf(yyout, " FLOAT(%s) ", yytext); 	return V_REAL;	}
 {ENTERO}	{ fprintf(yyout, " INT(%s) ", yytext); 		return V_ENTERO;}
+{REAL}		{ fprintf(yyout, " FLOAT(%s) ", yytext); 	return V_REAL;	}
 {ID}		{ 
 			//printf("ID: %s ", yytext);
 			fprintf(yyout, " ID(%s) ", yytext);			
