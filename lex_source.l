@@ -1,3 +1,4 @@
+%option yylineno
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,84 +12,90 @@ char tokens[10000];
 char errs[100000];
 %}
 
+%option noyywrap
+
 DIGITO		[0-9]
 LETRA		[a-zA-Z\242-\377]
-NOMBRE_F	({LETRA}|_)+
+MAIN		Main|main
 ALFA		{LETRA}|{DIGITO}
 ENTERO		{DIGITO}+
 EXPONENTE	[eE][+-]?{ENTERO}
 REAL		{ENTERO}.{ENTERO}{EXPONENTE}?
 PALABRA		{LETRA}+
-
 ID		[*]?{LETRA}{ALFA}*
 CADENA		["']([ ]*({ALFA}|%|,|;|:|_|[-]|[+])+[ ]*)*["']
 COMENTARIO	[/][/]([ ]*({ALFA}|%|,|;|:|_|[-]|[+])+[ ]*)*
 COMENTARIOS	[/][*]([ ]*({ALFA}|%|,|;|:|_|[-]|[+]|[\n]|[\t]|[*]|[ ])+[ ]*)*[*][/]
-BOOLEANO	true|false
 ERROR		({ENTERO}|{REAL}|{CADENA}|{COMENTARIO}|{COMENTARIOS}|%|:|_|[--]|[++])+{ID}
+VERDADERO	True|true
+FALSO		False|false
 %%
 
-"void"		{ fprintf(yyout, " VOID "); 		return VACIO; 		}
-"if"		{ fprintf(yyout, " SI "); 		return SI; 		}
-"else"		{ fprintf(yyout, " SINO "); 		return SINO; 		}
-"for"		{ fprintf(yyout, " PARA "); 		return PARA; 		}
-"do"		{ fprintf(yyout, " HACER ");		return HACER; 		}
-"while"		{ fprintf(yyout, " MIENTRAS QUE "); 	return MIENTRAS; 	}
-"switch"	{ fprintf(yyout, " DEPENDIENDO DE "); 	return DEPENDIENDO_DE; 	}
-"case"		{ fprintf(yyout, " CASO "); 		return CASO; 		}
-"default"	{ fprintf(yyout, " POR DEFECTO ");	return POR_DEFECTO; 	}
-"break"		{ fprintf(yyout, " DETENER "); 		return INTERRUMPIR; 	}
-"int"		{ fprintf(yyout, " ENTERO "); 		return ENTERO; 		}
-"float"		{ fprintf(yyout, " REAL "); 		return REAL; 		}
-"char"		{ fprintf(yyout, " CARACTER "); 	return CARACTER; 	}
-"printf"	{ fprintf(yyout, " ESCRIBIR "); 	return ESCRIBIR; 	}
-"scanf"		{ fprintf(yyout, " LEER "); 		return LEER; 		}
-"return"	{ fprintf(yyout, " RETORNA "); 		return RETORNAR; 	}
-{NOMBRE_F}	{ fprintf(yyout, " NOM_FUN "); 		return NOM_FUN; 	}
-"<--"		{ fprintf(yyout, "op-asign= <-- "); 	return ASIGNAR; 	}
-"+" 		{ fprintf(yyout, "op-sum= + "); 	return SUMAR; 		}
-"++"		{ fprintf(yyout, "op-sumcont= ++ "); 	return SUMAR_1; 	}
-"-" 		{ fprintf(yyout, "op-sust= - "); 	return RESTAR; 		}
-"--"		{ fprintf(yyout, "op-sustcont= -- "); 	return RESTAR_1; 	}
-"*" 		{ fprintf(yyout, "op-mult= * "); 	return MULTIPLICAR; 	}
-"/" 		{ fprintf(yyout, "op-div= / "); 	return DIVIDIR 		}
-"%"		{ fprintf(yyout, "op-mod= %% "); 	return MODULO; 		}
-"^" 		{ fprintf(yyout, "op-exp= ^ "); 	return POTENCIA; 	}
-"="		{ fprintf(yyout, "op-igual= = "); 	return ASIGNAR;		}
-"!"		{ fprintf(yyout, "op-neg= ! "); 	return NEGAR;		}
-"<="		{ fprintf(yyout, "op-men-ig= <= "); 	return MENOR_IGUAL_QUE;	}
-">="		{ fprintf(yyout, "op-may-ig= >= "); 	return MAYOR_IGUAL_QUE;	}
-"!="		{ fprintf(yyout, "op-difer= != "); 	return DIFERENTE_DE;	}
-"=="		{ fprintf(yyout, "op-comp= == "); 	return IGUAL_QUE;	}
-"<>"		{ fprintf(yyout, "op-difer= <> "); 	return DIFERENTE_DE;	}
-">"		{ fprintf(yyout, "op-mayor= > "); 	return MAYOR_QUE;	}
-"<"		{ fprintf(yyout, "op-menor= < "); 	return MENOR_QUE;	}
-"&"		{ fprintf(yyout, "op-y= & "); 		return Y;		}
-"&&"		{ fprintf(yyout, "op-comp-y= && "); 	return Y;		}
-"|"		{ fprintf(yyout, "op-o= | "); 		return O;		}
-"||"		{ fprintf(yyout, "op-comp-o= || "); 	return O;		}
-"\("		{ fprintf(yyout, "parent-a= ( "); 	return PAR_IZQ;		}
-"\)"		{ fprintf(yyout, "parent-c= ) "); 	return PAR_DER;		}
-"{"		{ fprintf(yyout, "inicio= { "); 	return LLA_IZQ;		}
-"}"		{ fprintf(yyout, "fin= } "); 		return LLA_DER;		}
-"["		{ fprintf(yyout, "corch-a= [ "); 	return COR_IZQ;		}
-"]"		{ fprintf(yyout, "corch-c= ] "); 	return COR_DER;		}
-":"		{ fprintf(yyout, "doble-punto= : "); 	return ASIGNAR;		}
-";"		{ fprintf(yyout, "punto-coma= ; "); 	return FIN_DCL;		}
-","		{ fprintf(yyout, "coma= , "); 		return COMA;		}
-"\."		{ fprintf(yyout, "punto= ."); 		/* NO ES UTIL */	}
-"\n"		{ fprintf(yyout, "\n"); ++_lineno; 	/* NO ES UTIL */	}
-"\t"		{ fprintf(yyout, "\t"); ++_lineno; 	/* NO ES UTIL */	}
+"void"		{ fprintf(yyout, " VOID "); 			return VACIO; 		}
+{VERDADERO}	{ fprintf(yyout, " true ");		 	return VERDADERO;	}
+{FALSO}		{ fprintf(yyout, " false ");		 	return FALSO;		}
+"if"		{ fprintf(yyout, " SI "); 			return SI; 		}
+"else"		{ fprintf(yyout, " SINO "); 			return SINO; 		}
+"for"		{ fprintf(yyout, " PARA "); 			return PARA; 		}
+"do"		{ fprintf(yyout, " HACER ");			return HACER; 		}
+"while"		{ fprintf(yyout, " MIENTRAS QUE "); 		return MIENTRAS_QUE; 	}
+"switch"	{ fprintf(yyout, " DEPENDIENDO DE "); 		return DEPENDIENDO_DE; 	}
+"case"		{ fprintf(yyout, " CASO "); 			return CASO; 		}
+"default"	{ fprintf(yyout, " POR DEFECTO ");		return POR_DEFECTO; 	}
+"break"		{ fprintf(yyout, " DETENER "); 			return INTERRUMPIR; 	}
+"bool"		{ fprintf (yyout, " BOOLEANO ");	 	return BOOLEANO;	}
+"int"		{ fprintf(yyout, " ENTERO "); 			return ENTERO; 		}
+"float"		{ fprintf(yyout, " REAL "); 			return REAL; 		}
+"char"		{ fprintf(yyout, " CARACTER "); 		return CARACTER; 	}
+"printf"	{ fprintf(yyout, " ESCRIBIR "); 		return ESCRIBIR; 	}
+"scanf"		{ fprintf(yyout, " LEER "); 			return LEER; 		}
+"return"	{ fprintf(yyout, " RETORNA "); 			return RETORNAR; 	}
+{MAIN}		{ fprintf(yyout, " MAIN "); 			return MAIN; 	}
+"<--"		{ fprintf(yyout, " <-- "); 			return ASIGNAR; 	}
+"+" 		{ fprintf(yyout, " + "); 			return SUMAR; 		}
+"++"		{ fprintf(yyout, " ++ ");	 		return SUMAR_1; 	}
+"-" 		{ fprintf(yyout, " - "); 			return RESTAR; 		}
+"--"		{ fprintf(yyout, " -- "); 			return RESTAR_1; 	}
+"*" 		{ fprintf(yyout, " * "); 			return MULTIPLICAR; 	}
+"/" 		{ fprintf(yyout, " / "); 			return DIVIDIR; 		}
+"%"		{ fprintf(yyout, " %% "); 			return MODULO; 		}
+"^" 		{ fprintf(yyout, " ^ "); 			return POTENCIA; 	}
+"="		{ fprintf(yyout, " = "); 			return ASIGNAR;		}
+"!"		{ fprintf(yyout, " ! "); 			return NEGAR;		}
+"~"		{ fprintf(yyout, " ~ ");	 		return NEGAR;		}
+"<="		{ fprintf(yyout, " <= ");	 		return MENOR_IGUAL_QUE;	}
+">="		{ fprintf(yyout, " >= "); 			return MAYOR_IGUAL_QUE;	}
+"!="		{ fprintf(yyout, " != "); 			return DIFERENTE_DE;	}
+"=="		{ fprintf(yyout, " == "); 			return IGUAL_QUE;	}
+"<>"		{ fprintf(yyout, " <> "); 			return DIFERENTE_DE;	}
+">"		{ fprintf(yyout, " > "); 			return MAYOR_QUE;	}
+"<"		{ fprintf(yyout, " < "); 			return MENOR_QUE;	}
+"&"		{ fprintf(yyout, " & "); 			return Y;		}
+"&&"		{ fprintf(yyout, " && "); 			return Y;		}
+"|"		{ fprintf(yyout, " | "); 			return O;		}
+"||"		{ fprintf(yyout, " || "); 			return O;		}
+"\("		{ fprintf(yyout, " ( "); 			return PAR_IZQ;		}
+"\)"		{ fprintf(yyout, " ) "); 			return PAR_DER;		}
+"{"		{ fprintf(yyout, " { "); 			return LLA_IZQ;		}
+"}"		{ fprintf(yyout, " } "); 			return LLA_DER;		}
+"["		{ fprintf(yyout, " [ "); 			return COR_IZQ;		}
+"]"		{ fprintf(yyout, " ] "); 			return COR_DER;		}
+":"		{ fprintf(yyout, " : "); 			return PP;		}
+";"		{ fprintf(yyout, " ; "); 			return PyC;		}
+","		{ fprintf(yyout, " , "); 			return COMA;		}
+"\."		{ fprintf(yyout, " ."); 			/* NO ES UTIL */	}
+"\n"		{ fprintf(yyout, "\n"); ++_lineno; 		/* NO ES UTIL */	}
+"\t"		{ fprintf(yyout, "\t"); ++_lineno; 		/* NO ES UTIL */	}
 [ ]		;
 
-{COMENTARIOS}	{ fprintf(yyout, "cte-comentarios= %s ", yytext); }
-{COMENTARIO}	{ fprintf(yyout, "cte-comentario= %s ", yytext); }
-{CADENA}	{ fprintf(yyout, "cte-cadena= %s ", yytext);	return V_CADENA;}
-{BOOLEANO}	{ printf ("cte-booleano= %s ", yytext); 	return BOOLEANO;}
-{ENTERO}	{ fprintf(yyout, "cte-entero= %s ", yytext); 	return V_ENTERO;}
-{REAL}		{ fprintf(yyout, "cte-real= %s ", yytext); 	return V_REAL;	}
+{COMENTARIOS}	;
+{COMENTARIO}	;
+{CADENA}	{ fprintf(yyout, " STRING(%s) ", yytext);	return V_CADENA;}
+{ENTERO}	{ fprintf(yyout, " INT(%s) ", yytext); 		return V_ENTERO;}
+{REAL}		{ fprintf(yyout, " FLOAT(%s) ", yytext); 	return V_REAL;	}
 {ID}		{ 
-			printf("ID: %s ", yytext);			
+			//printf("ID: %s ", yytext);
+			fprintf(yyout, " ID(%s) ", yytext);			
 			char *result = malloc(strlen("ID: ") +strlen(yytext) +strlen("\t") +1);
 			strcpy(result, "ID: ");
 			strcat(result, yytext);
@@ -99,7 +106,8 @@ ERROR		({ENTERO}|{REAL}|{CADENA}|{COMENTARIO}|{COMENTARIOS}|%|:|_|[--]|[++])+{ID
 			return ID;
 		}
 {ERROR}		{ 
-			printf("\nERROR EN LINEA %d, EN %s\n", _lineno, yytext); 
+			//printf("\nERROR EN LINEA %d, EN %s\n", _lineno, yytext); 
+			fprintf(yyout, " L_ERROR ");
 			char str[12];
 			sprintf(str, "%d", _lineno);
 			char* result = malloc(strlen("\tERROR EN LINEA ") +strlen(str) +strlen(", EN ") +strlen(yytext) +strlen("\n") +1);
@@ -112,6 +120,7 @@ ERROR		({ENTERO}|{REAL}|{CADENA}|{COMENTARIO}|{COMENTARIOS}|%|:|_|[--]|[++])+{ID
 			++_lineno; 
 			return L_ERROR;
 		}
+<<EOF>>		{ return E_O_F; }
 
 .		{ 
 			printf("\nERROR EN LINEA %d, EN %s\n", _lineno, yytext); 

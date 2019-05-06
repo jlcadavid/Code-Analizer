@@ -9,12 +9,13 @@ for (gm = 0;gm < 100;gm = gm++)
   i = 2ja;   
 }
 
-switch(t)
+switch(t){
 case 1:
  g2 = 0;
 
 case 2: 
  g4 =23b;
+}
 
 for(i = 2;i >= 0;--i)
 {
