@@ -1,3 +1,6 @@
 void main(){
-	main();
+	if(a > 2)
+	{
+	
+	}
 }

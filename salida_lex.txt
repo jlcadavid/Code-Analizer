@@ -1,16 +1,49 @@
  VOID  MAIN  (  ) 
  { 
 
- LEER  (  STRING("%d")  ,  ID(g2)  )  ; 
+	 LEER  (  STRING("%d")  ,  ID(g2)  )  ; 
 
- PARA  (  ID(gm)  =  INT(0)  ;  ID(gm)  <  INT(100)  ;  ID(gm)  =  ID(gm)  ++  ) 
- { 
- ESCRIBIR  (  STRING("Mi edad: %d")  ,  ID(td)  )  ; 
- ID(i)  =  L_ERROR  ; 
+	 PARA  (  ID(gm)  =  FLOAT(0)  ;  ID(gm)  <  FLOAT(100)  ;  ID(gm)  =  ID(gm)  ++  ) 
+	 { 
+		 ESCRIBIR  (  STRING("Mi edad: %d")  ,  ID(td)  )  ; 
+		 ID(i)  =  L_ERROR  ; 
+	 } 
+
+	 DEPENDIENDO DE  (  ID(t)  )  { 
+		 CASO  FLOAT(1)  : 
+			 ID(g2)  =  FLOAT(0)  ; 
+
+		 CASO  FLOAT(2)  : 
+			 ID(g4)  =  L_ERROR  ; 
+	 } 
+
+	 PARA  (  ID(i)  =  FLOAT(2)  ;  ID(i)  >=  FLOAT(0)  ;  --  ID(i)  ) 
+	 { 
+	 LEER  (  STRING("%d")  ,  ID(jaime)  )  ; 
+	 ESCRIBIR  (  STRING("%d")  ,  ID(i)  )  ; 	
+	 } 
+	
+	 MIENTRAS QUE  (  ID(sw)  ==  FLOAT(0)  &&  ID(gm)  ==  FLOAT(0)  ) 
+	 { 
+		 ID(jaime)  =  ID(flaquita)  /  FLOAT(10)  *  FLOAT(25.43)  ; 
+
+		 SI  (  ID(flaquita)  !=  FLOAT(2)  ) 
+		 { 
+			 ID(sw)  =  FLOAT(1)  ; 
+		 } 
+		 ID(i)  =  ID(i)  +  FLOAT(14.65e6)  ; 
+	 } 
+
+	
+
+	 SI  (  ID(jaime)  ) 
+	 { 
+		 ID(g3)  =  ID(g2)  +  FLOAT(4e32)  ; 
+	 } 
+	 SINO 
+	 { 
+		 ID(df)  =  false  ; 	
+	 } 
+
  } 
-
- DEPENDIENDO DE  (  ID(t)  )  { 
- CASO  INT(1)  : 
- ID(g2)  =  INT(0)  ; 
-
- CASO  INT(2) 
+ EOF 

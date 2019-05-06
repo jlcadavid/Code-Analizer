@@ -18,15 +18,15 @@ DIGITO		[0-9]
 LETRA		[a-zA-Z\242-\377]
 MAIN		Main|main
 ALFA		{LETRA}|{DIGITO}
-ENTERO		{DIGITO}+
+ENTERO		[1-9]{DIGITO}*|0
 EXPONENTE	[eE][+-]?{ENTERO}
-REAL		{ENTERO}.{ENTERO}{EXPONENTE}?
+REAL		{ENTERO}(\.{ENTERO})?{EXPONENTE}?
 PALABRA		{LETRA}+
 ID		[*]?{LETRA}{ALFA}*
 CADENA		["']([ ]*({ALFA}|%|,|;|:|_|[-]|[+])+[ ]*)*["']
 COMENTARIO	[/][/]([ ]*({ALFA}|%|,|;|:|_|[-]|[+])+[ ]*)*
 COMENTARIOS	[/][*]([ ]*({ALFA}|%|,|;|:|_|[-]|[+]|[\n]|[\t]|[*]|[ ])+[ ]*)*[*][/]
-ERROR		({ENTERO}|{REAL}|{CADENA}|{COMENTARIO}|{COMENTARIOS}|%|:|_|[--]|[++])+{ID}
+ERROR		({ENTERO}|{REAL}|{CADENA}|{COMENTARIO}|{COMENTARIOS}|%|:|_)+{ID}
 VERDADERO	True|true
 FALSO		False|false
 %%
@@ -85,14 +85,14 @@ FALSO		False|false
 ","		{ fprintf(yyout, " , "); 			return COMA;		}
 "\."		{ fprintf(yyout, " ."); 			/* NO ES UTIL */	}
 "\n"		{ fprintf(yyout, "\n"); ++_lineno; 		/* NO ES UTIL */	}
-"\t"		{ fprintf(yyout, "\t"); ++_lineno; 		/* NO ES UTIL */	}
+"\t"		{ fprintf(yyout, "%s", yytext); ++_lineno; 	/* NO ES UTIL */	}
 [ ]		;
 
 {COMENTARIOS}	;
 {COMENTARIO}	;
 {CADENA}	{ fprintf(yyout, " STRING(%s) ", yytext);	return V_CADENA;}
-{ENTERO}	{ fprintf(yyout, " INT(%s) ", yytext); 		return V_ENTERO;}
 {REAL}		{ fprintf(yyout, " FLOAT(%s) ", yytext); 	return V_REAL;	}
+{ENTERO}	{ fprintf(yyout, " INT(%s) ", yytext); 		return V_ENTERO;}
 {ID}		{ 
 			//printf("ID: %s ", yytext);
 			fprintf(yyout, " ID(%s) ", yytext);			
@@ -120,7 +120,7 @@ FALSO		False|false
 			++_lineno; 
 			return L_ERROR;
 		}
-<<EOF>>		{ return E_O_F; }
+<<EOF>>		{ fprintf(yyout, " EOF "); 			return E_O_F; }
 
 .		{ 
 			printf("\nERROR EN LINEA %d, EN %s\n", _lineno, yytext); 
