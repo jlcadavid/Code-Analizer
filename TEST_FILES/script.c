@@ -9,13 +9,13 @@ void main()
 		i = 2ja;   
 	}
 
-	switch(t){
+	switch(t)
 		case 1:
 			g2 = 0;
 
 		case 2: 
-			g4 =23b;
-	}
+			g4 =23b
+	
 
 	for(i = 2;i >= 0;--i)
 	{
@@ -31,14 +31,14 @@ void main()
 		{
 			sw = 1;
 		}
-		i = i + 14.65e6;
+		i = i + 14.65e6
 	}
 
 	/* Esto
 	  es un p�rrafo de
 	   comentarios */
 
-	if (jaime)
+	if jaime
 	{
 		g3 = g2 + 4e32;
 	}

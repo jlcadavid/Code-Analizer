@@ -1,0 +1,13 @@
+ VOID  MAIN  (  ) 
+ { 
+
+	 LEER  (  STRING("%d")  ,  ID(g2)  )  ; 
+
+	 PARA  (  ID(gm)  =  INT(0)  ;  ID(gm)  <  INT(100)  ;  ID(gm)  =  ID(gm)  ++  ) 
+	 { 
+		 ESCRIBIR  (  STRING("Mi edad: %d")  ,  ID(td)  )  ; 
+		 ID(i)  =  L_ERROR  ; 
+	 } 
+
+	 DEPENDIENDO DE  (  ID(t)  ) 
+		 CASO 
