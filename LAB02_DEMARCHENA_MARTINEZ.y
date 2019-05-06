@@ -9,7 +9,7 @@
 int err_c = 0;
 int err_l = 0;
 int can_write = 0;
-char * errs[100];
+char errs[20][55];
 void print();
 %}
 
@@ -91,13 +91,13 @@ void print();
 
 PROGRAM_START: TIPO_FUN NOMBRE_FUN PAR_IZQ OPT_PARAMS PAR_DER LLA_IZQ OPT_ARGS LLA_DER STOP;
 
-STOP: E_O_F { 
-				if(err_c == 0){
-					print("NO SE HAN PRESENTADO ERRORES!", 1);		
+STOP: E_O_F 	{ 
+					if(err_c == 0){
+						print("NO SE HAN PRESENTADO ERRORES!", 1);		
+					}
+					can_write = 1;
+					return 0;
 				}
-				can_write = 1;
-				return 0;
-			}
 	;
 
 NOMBRE_FUN: MAIN | LEER | ESCRIBIR;
@@ -262,21 +262,18 @@ void yyerror(char *s) {
 }
 
 void print(char *t, int o){
-	char* result; 
 	if(o == 0){
-		sprintf(result, "%s%d\n", t, (yylineno));
-		errs[err_c] = malloc(strlen(result) +1); 
-		strcpy(errs[err_c], result);
+		printf( "%s%d\n", t, (yylineno));
+		snprintf(errs[err_c], "%s%d\n", t, (yylineno));
 	}
 	if(o == 1){
-		sprintf(result, "%s\n", t);
-		errs[err_c] = malloc(strlen(result) +1); 
-		strcpy(errs[err_c], result);
+		printf("%s\n", t);
+		snprintf(errs[err_c], "%s\n", t);
 	}
 }
 
 int main(int argc, char *argv[]) {
-	printf("Input: %s\n", argv[1]);
+	printf("\nInput: %s\n", argv[1]);
 	FILE *fp = fopen(argv[1], "r");
 	FILE *lex_out_file = fopen("salida_lex.txt", "w"); // write only 
 	if (!fp) {

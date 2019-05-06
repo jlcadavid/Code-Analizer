@@ -1,0 +1,41 @@
+#!/bin/bash
+# Script que lee un archivo en c y lo analiza lexicamente con lex generando un archivo resultado.
+# Cristhyan De Marchena && Jose Luis Martinez.
+
+if [[ $# -eq 0 ]]; then 
+    echo "ERROR: No se fue especificado el <archivo.c> de entrada..."
+else
+    echo "VERIFICANDO DEPENDENCIAS..."
+
+    if command flex --version >/dev/null 2>&1 ; then
+        echo "  Flex esta instalado."
+    else
+        echo "  Instalando Flex..."
+        echo "  $(sudo apt-get install flex -y)"
+    fi
+
+    if command gcc --version >/dev/null 2>&1 ; then
+        echo "  Gcc esta instalado."
+    else
+        echo "  Instalando Gcc..."
+        echo "  $(sudo apt-get install gcc -y)"
+    fi
+	
+	if command bison --version >/dev/null 2>&1 ; then
+        echo "  Bison esta instalado."
+    else
+        echo "  Instalando Bison..."
+        echo "  $(sudo apt-get install bison -y)"
+    fi
+
+    input=$1
+
+    echo "-------------------------------------------------------------------------"
+	echo "Generando fuente de yacc $(yacc -d LAB02_DEMARCHENA_MARTINEZ.y)"
+    echo "-------------------------------------------------------------------------"
+	echo "Generando fuente de lex $(lex LAB02_DEMARCHENA_MARTINEZ.l)"
+    echo "-------------------------------------------------------------------------"
+    echo "Generando ejecutable $(gcc lex.yy.c y.tab.c -o LAB02_DEMARCHENA_MARTINEZ.out)"
+    echo "-------------------------------------------------------------------------"
+    echo "Generando salidas de yacc & lex $(./LAB02_DEMARCHENA_MARTINEZ.out $input)"
+fi
