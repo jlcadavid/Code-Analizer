@@ -10,4 +10,40 @@
 	 } 
 
 	 DEPENDIENDO DE  (  ID(t)  ) 
-		 CASO 
+		 CASO  INT(1)  : 
+			 ID(g2)  =  INT(0)  ; 
+
+		 CASO  INT(2)  : 
+			 ID(g4)  =  L_ERROR 
+	
+
+	 PARA  (  ID(i)  =  INT(2)  ;  ID(i)  >=  INT(0)  ;  --  ID(i)  ) 
+	 { 
+	 LEER  (  STRING("%d")  ,  ID(jaime)  )  ; 
+	 ESCRIBIR  (  STRING("%d")  ,  ID(i)  )  ; 	
+	 } 
+	
+	 MIENTRAS QUE  (  ID(sw)  ==  INT(0)  &&  ID(gm)  ==  INT(0)  ) 
+	 { 
+		 ID(jaime)  =  ID(flaquita)  /  INT(10)  *  FLOAT(25.43)  ; 
+
+		 SI  (  ID(flaquita)  !=  INT(2)  ) 
+		 { 
+			 ID(sw)  =  INT(1)  ; 
+		 } 
+		 ID(i)  =  ID(i)  +  FLOAT(14.65e6) 
+	 } 
+
+	
+
+	 SI  ID(jaime) 
+	 { 
+		 ID(g3)  =  ID(g2)  +  FLOAT(4e32)  ; 
+	 } 
+	 SINO 
+	 { 
+		 ID(df)  =  false  ; 	
+	 } 
+
+ } 
+ EOF 

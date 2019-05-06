@@ -29,7 +29,8 @@ else
     fi
 
     input=$1
-
+	output="salida_yacc.txt"
+	
     echo "-------------------------------------------------------------------------"
 	echo "Generando fuente de yacc $(yacc -d LAB02_DEMARCHENA_MARTINEZ.y)"
     echo "-------------------------------------------------------------------------"
@@ -37,5 +38,5 @@ else
     echo "-------------------------------------------------------------------------"
     echo "Generando ejecutable $(gcc lex.yy.c y.tab.c -o LAB02_DEMARCHENA_MARTINEZ.out)"
     echo "-------------------------------------------------------------------------"
-    echo "Generando salidas de yacc & lex $(./LAB02_DEMARCHENA_MARTINEZ.out $input)"
+    echo "Generando salidas de yacc & lex $(./LAB02_DEMARCHENA_MARTINEZ.out $input > $output)"
 fi

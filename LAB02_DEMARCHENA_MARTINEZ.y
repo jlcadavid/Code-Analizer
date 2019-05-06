@@ -1,4 +1,5 @@
 %locations
+%define parse.error verbose
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -217,19 +218,20 @@ DECLARACION_MIENTRAS_QUE: MIENTRAS_QUE PAR_IZQ DECLARACION_LOGICA OPT_DECLARACIO
 DECLARACION_HACER_HASTA: HACER LLA_IZQ OPT_ARGS LLA_DER MIENTRAS_QUE PAR_IZQ DECLARACION_LOGICA OPT_DECLARACION_LOGICA PAR_DER;
 
 DECLARACION_DEPENDIENDO_DE	: DEPENDIENDO_DE PAR_IZQ ID_EL PAR_DER LLA_IZQ OPT_CASOS LLA_DER
-							//| DEPENDIENDO_DE PAR_IZQ ID_EL PAR_DER LLA_IZQ error OPT_CASOS LLA_DER
+							//| DEPENDIENDO_DE PAR_IZQ ID_EL PAR_DER error OPT_CASOS LLA_DER {printf("NO JODA ECHE NO JODA\n"); }
+							| error //{printf("NO JODA ECHE NO JODA\n"); }
 							;
 
 OPT_CASOS   : DECLARACION_CASO OPT_CASO
-			//| error DECLARACION_CASO OPT_CASO
-			//| error OPT_CASO
+			//| error DECLARACION_CASO OPT_CASO { printf("A VE\n"); }
+			//| error OPT_CASO { printf("ON TA BB\n"); }
 			;
 
 DECLARACION_CASO: CASO CASO_P PP OPT_ARGS P_BREAK
- 				//| error CASO CASO_P PP OPT_ARGS P_BREAK
-				//| error CASO_P PP OPT_ARGS P_BREAK
-				//| CASO error CASO_P PP OPT_ARGS P_BREAK
-				//| CASO error PP OPT_ARGS P_BREAK
+ 				//| error CASO CASO_P PP OPT_ARGS P_BREAK { printf("on ta bebe\n"); }
+				//| error CASO_P PP OPT_ARGS P_BREAK { printf("on ta bebe\n"); }
+				//| CASO error CASO_P PP OPT_ARGS P_BREAK { printf("on ta bebe\n"); }
+				//| CASO error PP OPT_ARGS P_BREAK { printf("on ta bebe\n"); }
 				//| CASO CASO_P error PP OPT_ARGS P_BREAK
 				;
 
@@ -270,7 +272,7 @@ extern FILE *yyout;
 extern int yylineno;
 
 void yyerror(char *s) {
-	print("ERROR SINTACTICO EN LA LINEA: ", 0); 
+	print("ERROR SINTACTICO EN LA LINEA: ", 2); 
 	err_c++; 
 	err_l++;
 }
@@ -278,11 +280,15 @@ void yyerror(char *s) {
 void print(char *t, int o){
 	if(o == 0){
 		printf( "%s%d\n", t, (yylineno));
-		snprintf(errs[err_c], "%s%d\n", t, (yylineno));
+		//snprintf(errs[err_c], "%s%d\n", t, (yylineno));
 	}
 	if(o == 1){
 		printf("%s\n", t);
-		snprintf(errs[err_c], "%s\n", t);
+		//snprintf(errs[err_c], "%s\n", t);
+	}
+	if(o == 2){
+		printf( "%s%d\n", t, (yylineno -1));
+		//snprintf(errs[err_c], "%s%d\n", t, (yylineno));
 	}
 }
 
