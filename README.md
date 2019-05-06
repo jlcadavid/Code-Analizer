@@ -1,3 +1,5 @@
 # YACC AND LEX FILE ANALIZER.
 
-- we need a bash script for simple usage...
+- Simple usage: 
+  1) Give excution privilege to LAB02_DEMARCHENA_MARTINEZ
+  2) Run ./LAB02_DEMARCHENA_MARTINEZ <input_file_name>
