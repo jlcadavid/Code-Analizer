@@ -38,7 +38,7 @@ void main()
 	  es un p�rrafo de
 	   comentarios */
 
-	if jaime
+	if (jaime)
 	{
 		g3 = g2 + 4e32;
 	}
