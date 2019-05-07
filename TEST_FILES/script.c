@@ -16,12 +16,12 @@ void main()
 		case 2: 
 			g4 =23b
 	
-
 	for(i = 2;i >= 0;--i)
 	{
 	  scanf("%d",jaime);
 	  printf("%d",i);	
 	}
+
 	//esto es una l�nea de comentario
 	while (sw == 0 && gm == 0 )
 	{
@@ -38,13 +38,12 @@ void main()
 	  es un p�rrafo de
 	   comentarios */
 
-	if (jaime)
+	if jaime
 	{
 		g3 = g2 + 4e32;
 	}
 	else
 	{
 		df = false;	 
-	}
-
+	}	
 }
