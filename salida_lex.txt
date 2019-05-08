@@ -1,8 +1,13 @@
- ENTERO  MAIN  (  )  { 
-	 SI  (  true  )  { 
- ESCRIBIR  (  STRING("John no vale pan!")  )  ; 
- PARA  (  ENTERO  ID(a)  =  INT(2)  ;  ID(a)  >  INT(10)  ;  ID(a)  ++  )  { 
- ESCRIBIR  (  STRING("%d")  ,  ID(a)  )  ; 
+ VOID  MAIN  (  )  { 
+
+	 PARA  (  ID(i)  =  INT(2)  ;  >  =  INT(0)  ;  ) 
+	 { 
+	 LEER  (  STRING("%d")  ,  ID(jaime)  )  ; 
+	 ESCRIBIR  (  STRING("%d")  ,  ID(i)  )  ; 	
+	 } 
  } 
- } 
- } 
+
+ids:
+ID: i	ID: jaime	
+
+errores:

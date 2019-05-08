@@ -8,6 +8,7 @@
 
 int _lineno = 1;
 int token_index = 0;
+void yyerror(const char*);
 char tokens[10000];
 char errs[100000];
 %}
@@ -51,38 +52,31 @@ FALSO		False|false
 "scanf"		{ fprintf(yyout, " LEER "); 				return LEER; 			}
 "return"	{ fprintf(yyout, " RETORNA "); 				return RETORNAR; 		}
 {MAIN}		{ fprintf(yyout, " MAIN "); 				return MAIN;	 		}
-"<--"		{ fprintf(yyout, " <-- "); 					return ASIGNAR; 		}
-"+" 		{ fprintf(yyout, " + "); 					return SUMAR; 			}
-"++"		{ fprintf(yyout, " ++ ");	 				return SUMAR_1; 		}
-"-" 		{ fprintf(yyout, " - "); 					return RESTAR; 			}
-"--"		{ fprintf(yyout, " -- "); 					return RESTAR_1; 		}
-"*" 		{ fprintf(yyout, " * "); 					return MULTIPLICAR; 	}
-"/" 		{ fprintf(yyout, " / "); 					return DIVIDIR; 		}
-"%"			{ fprintf(yyout, " %% "); 					return MODULO; 			}
-"^" 		{ fprintf(yyout, " ^ "); 					return POTENCIA; 		}
-"="			{ fprintf(yyout, " = "); 					return ASIGNAR;			}
-"!"			{ fprintf(yyout, " ! "); 					return NEGAR;			}
-"~"			{ fprintf(yyout, " ~ ");	 				return NEGAR;			}
-"<="		{ fprintf(yyout, " <= ");	 				return MENOR_IGUAL_QUE;	}
-">="		{ fprintf(yyout, " >= "); 					return MAYOR_IGUAL_QUE;	}
-"!="		{ fprintf(yyout, " != "); 					return DIFERENTE_DE;	}
-"=="		{ fprintf(yyout, " == "); 					return IGUAL_QUE;		}
-"<>"		{ fprintf(yyout, " <> "); 					return DIFERENTE_DE;	}
-">"			{ fprintf(yyout, " > "); 					return MAYOR_QUE;		}
-"<"			{ fprintf(yyout, " < "); 					return MENOR_QUE;		}
+"<--"		{ fprintf(yyout, " <-- "); 					return '='; 			}
+"+" 		{ fprintf(yyout, " + "); 					return '+'; 			}
+"-" 		{ fprintf(yyout, " - "); 					return '-'; 			}
+"*" 		{ fprintf(yyout, " * "); 					return '*'; 			}
+"/" 		{ fprintf(yyout, " / "); 					return '/'; 			}
+"%"			{ fprintf(yyout, " %% "); 					return '%'; 			}
+"^" 		{ fprintf(yyout, " ^ "); 					return '^'; 			}
+"="			{ fprintf(yyout, " = "); 					return '=';				}
+"!"			{ fprintf(yyout, " ! "); 					return '!';				}
+"~"			{ fprintf(yyout, " ~ ");	 				return '!';				}
+">"			{ fprintf(yyout, " > "); 					return '>';		}
+"<"			{ fprintf(yyout, " < "); 					return '<';		}
 "&"			{ fprintf(yyout, " & "); 					return Y;				}
 "&&"		{ fprintf(yyout, " && "); 					return Y;				}
 "|"			{ fprintf(yyout, " | "); 					return O;				}
 "||"		{ fprintf(yyout, " || "); 					return O;				}
-"\("		{ fprintf(yyout, " ( "); 					return PAR_IZQ;			}
-"\)"		{ fprintf(yyout, " ) "); 					return PAR_DER;			}
-"{"			{ fprintf(yyout, " { "); 					return LLA_IZQ;			}
-"}"			{ fprintf(yyout, " } "); 					return LLA_DER;			}
-"["			{ fprintf(yyout, " [ "); 					return COR_IZQ;			}
-"]"			{ fprintf(yyout, " ] "); 					return COR_DER;			}
-":"			{ fprintf(yyout, " : "); 					return PP;				}
-";"			{ fprintf(yyout, " ; "); 					return PyC;				}
-","			{ fprintf(yyout, " , "); 					return COMA;			}
+"\("		{ fprintf(yyout, " ( "); 					return '(';				}
+"\)"		{ fprintf(yyout, " ) "); 					return ')';				}
+"{"			{ fprintf(yyout, " { "); 					return '{';				}
+"}"			{ fprintf(yyout, " } "); 					return '}';				}
+"["			{ fprintf(yyout, " [ "); 					return '[';				}
+"]"			{ fprintf(yyout, " ] "); 					return ']';				}
+":"			{ fprintf(yyout, " : "); 					return ':';				}
+";"			{ fprintf(yyout, " ; "); 					return ';';				}
+","			{ fprintf(yyout, " , "); 					return ',';				}
 "\."		{ fprintf(yyout, " ."); 					/* NO ES UTIL */		}
 "\n"		{ fprintf(yyout, "\n"); ++_lineno; 			/* NO ES UTIL */		}
 "\t"		{ fprintf(yyout, "%s", yytext); 			/* NO ES UTIL */		}
@@ -94,31 +88,29 @@ FALSO		False|false
 {ENTERO}	{ fprintf(yyout, " INT(%s) ", yytext); 		return V_ENTERO;}
 {REAL}		{ fprintf(yyout, " FLOAT(%s) ", yytext); 	return V_REAL;	}
 {ID}		{ 
-			//printf("ID: %s ", yytext);
-			fprintf(yyout, " ID(%s) ", yytext);			
-			char *result = malloc(strlen("ID: ") +strlen(yytext) +strlen("\t") +1);
-			strcpy(result, "ID: ");
-			strcat(result, yytext);
-			strcat(result, "\t");
-			if(!strstr(tokens, result)){
-				strcat(tokens, result);			
+				fprintf(yyout, " ID(%s) ", yytext);			
+				char *result = malloc(strlen("ID: ") +strlen(yytext) +strlen("\t") +1);
+				strcpy(result, "ID: ");
+				strcat(result, yytext);
+				strcat(result, "\t");
+				if(!strstr(tokens, result)){
+					strcat(tokens, result);			
+				}
+				return ID;
 			}
-			return ID;
-		}
 {ERROR}		{ 
-			//printf("\nERROR EN LINEA %d, EN %s\n", _lineno, yytext); 
-			fprintf(yyout, " L_ERROR ");
-			char str[12];
-			sprintf(str, "%d", _lineno);
-			char* result = malloc(strlen("\tERROR EN LINEA ") +strlen(str) +strlen(", EN ") +strlen(yytext) +strlen("\n") +1);
-			strcpy(result, "\tERROR EN LINEA ");
-			strcat(result, str);
-			strcat(result, ", EN ");
-			strcat(result, yytext);
-			strcat(result, "\n");
-			strcat(errs, result);		
-			++_lineno; 
-			return L_ERROR;
+				fprintf(yyout, " L_ERROR ");
+				char str[12];
+				sprintf(str, "%d", _lineno);
+				char* result = malloc(strlen("\tERROR LEXICO EN LINEA ") +strlen(str) +strlen(", en '") +strlen(yytext) +strlen("'\n") +1);
+				strcpy(result, "\tERROR EN LINEA ");
+				strcat(result, str);
+				strcat(result, ", en '");
+				strcat(result, yytext);
+				strcat(result, "'\n");
+				strcat(errs, result);		
+				++_lineno; 
+				return L_ERROR;
 		}
 
 
@@ -126,7 +118,7 @@ FALSO		False|false
 			printf("\nERROR EN LINEA %d, EN %s\n", _lineno, yytext); 
 			char str[12];
 			sprintf(str, "%d", _lineno);
-			char* result = malloc(strlen("\tERROR EN LINEA ") +strlen(str) +strlen(", EN ") +strlen(yytext) +strlen("\n") +1);
+			char* result = malloc(strlen("\tERROR EN LINEA ") +strlen(str) +strlen(", en ") +strlen(yytext) +strlen("\n") +1);
 			strcpy(result, "\tERROR EN LINEA ");
 			strcat(result, str);
 			strcat(result, ", EN ");
@@ -136,3 +128,10 @@ FALSO		False|false
 			++_lineno; 
 		}
 %%
+
+void print_in_lex(){
+	fprintf(yyout, "\n\nids:\n");
+	fprintf(yyout, "%s", tokens);
+	fprintf(yyout, "\n\nerrores:\n");
+	fprintf(yyout, "%s", errs);
+}
