@@ -1,13 +1,7 @@
- VOID  MAIN  (  )  { 
-
-	 PARA  (  ID(i)  =  INT(2)  ;  >  =  INT(0)  ;  ) 
-	 { 
-	 LEER  (  STRING("%d")  ,  ID(jaime)  )  ; 
-	 ESCRIBIR  (  STRING("%d")  ,  ID(i)  )  ; 	
-	 } 
- } 
+ ID(include) 
 
 ids:
-ID: i	ID: jaime	
+ID: include	
 
 errores:
+	ERROR EN LINEA 1, EN #

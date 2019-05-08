@@ -93,7 +93,8 @@ extern int yylineno;
 /* LENGUAJE PARECIDO A C */
 
 PROGRAM_START: 
-	  TIPO_FUN NOMBRE_FUN '(' OPT_PARAMS ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> PROGRAM_START")*/ }
+	  TIPO_FUN NOMBRE_FUN '(' OPT_PARAMS ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> PROGRAM_START")*/ }  
+	| TIPO_FUN NOMBRE_FUN '(' OPT_PARAMS ')' '{' error { yyclearin; }  
 	;
 
 NOMBRE_FUN: 
@@ -134,43 +135,43 @@ OPT_PARAM:
 	;
 
 OPT_ARGS: 
-	  ARG OPT_ARG 		{ /*printf("\nMNG -> OPT_ARGS")*/ }
+	  ARG OPT_ARG 		{ /*printf("\nMNG -> OPT_ARGS");*/ }
 	| /* VACIO */ 		{ /*printf("\nMNG -> OPT_ARGS")*/ }	
 	;
 
 ARG: 
-	  DECLARACION_SI 				{ /*printf("\nMNG -> ARG")*/ }
-	| DECLARACION_PARA 				{ /*printf("\nMNG -> ARG")*/ }
-	| DECLARACION_MIENTRAS_QUE 		{ /*printf("\nMNG -> ARG")*/ }
-	| DECLARACION_HACER_HASTA		{ /*printf("\nMNG -> ARG")*/ }
-	| DECLARACION_DEPENDIENDO_DE	{ /*printf("\nMNG -> ARG")*/ }
-	| DECLARACION_LLAMAR_FUN		{ /*printf("\nMNG -> ARG")*/ }
-	| DECLARACION_ASIGNAR_A_VAR		{ /*printf("\nMNG -> ARG")*/ }
+	  DECLARACION_SI 				{ /*printf("\nMNG -> ARG")* 				YA*/ }
+	| DECLARACION_PARA 				{ /*printf("\nMNG -> ARG")				YA*/ }
+	| DECLARACION_MIENTRAS_QUE 		{ /*printf("\nMNG -> ARG")		*/ }
+	| DECLARACION_HACER_HASTA		{ /*printf("\nMNG -> ARG")			*/ }
+	| DECLARACION_DEPENDIENDO_DE	{ /*printf("\nMNG -> ARG")		*/ }
+	| DECLARACION_LLAMAR_FUN		{ /*printf("\nMNG -> ARG")			*/ }
+	| DECLARACION_ASIGNAR_A_VAR		{ /*printf("\nMNG -> ARG")		*/ }
 	| error							{  yyclearin;  } 
 	;
 
 OPT_ARG: 
 	    ARG OPT_ARG 	{ /*printf("\nMNG -> OPT_ARG")*/ }
-	  | /* VACIO */		{ /*printf("\nMNG -> OPT_ARG")*/ }
+	  | /* VACIO */		{ /*printf("\nMNG -> OPT_ARG");*/ }
       ;
 
 DECLARACION_SI: 
 	  SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS '}' DECLARACION_SINO 		 
-	//| error SI  																									{ /*save("no se esperaba nada antes de la palabra clave 'if'")*/ }
-	//| error '(' 																								{ /*save("se esperaba la palabra clave 'if'")*/ }	
-	//| SI error '(' 																								{ /*save("no se esperaba nada entre un 'if' y un '('")*/ }
-	//| SI error DECLARACION_LOGICA 																					{ /*save("se esperaba un '('")*/ }
-	//| SI '(' error DECLARACION_LOGICA 																			{ /*save("no se esperaba nada entre un '(' y una expresion logica")*/ }
-	//| SI '(' error OPT_DECLARACION_LOGICA 																		{ /*save("se esperaba una expresion logica")*/ } 
-	//| SI '(' DECLARACION_LOGICA  error OPT_DECLARACION_LOGICA 													{ /*save("no se esperaba nada entre una expresion logica y una expresion logica")*/ }
-	//| SI '(' DECLARACION_LOGICA error ')' 																	{ /*save("se esperaba una expresion logica")*/ }
-	//| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error ')' 											{ /*save("no se esperaba nada entre una expresion logica y un ')'")*/ }
-	//| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error '{' 											{ /*save("se esperaba un ')'")*/ }
-	//| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' error '{'  									{ /*save("no se esperaba nada entre un ')' y un '{'")*/ }
-	//| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' error OPT_ARGS 				 					{ /*save("se esperaba un '{'")*/ } 
-	//| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' error OPT_ARGS 				 			{ /*save("no se esperaba nada entre un '{' y los argumentos")*/ } 
-	//| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' error '}'   				 			{ /*save("se esperaban argumentos")*/ }
-	//| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS error '}'   				{ /*save("no se esperaba nada entre los argumentos y un '}'")*/ } 
+	| error SI  																									{ /*save("no se esperaba nada antes de la palabra clave 'if'")*/ }
+	| error '(' 																								{ /*save("se esperaba la palabra clave 'if'")*/ }	
+	| SI error '(' 																								{ /*save("no se esperaba nada entre un 'if' y un '('")*/ }
+	| SI error DECLARACION_LOGICA 																					{ /*save("se esperaba un '('")*/ }
+	| SI '(' error DECLARACION_LOGICA 																			{ /*save("no se esperaba nada entre un '(' y una expresion logica")*/ }
+	| SI '(' error OPT_DECLARACION_LOGICA 																		{ /*save("se esperaba una expresion logica")*/ } 
+	| SI '(' DECLARACION_LOGICA  error OPT_DECLARACION_LOGICA 													{ /*save("no se esperaba nada entre una expresion logica y una expresion logica")*/ }
+	| SI '(' DECLARACION_LOGICA error ')' 																	{ /*save("se esperaba una expresion logica")*/ }
+	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error ')' 											{ /*save("no se esperaba nada entre una expresion logica y un ')'")*/ }
+	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error '{' 											{ /*save("se esperaba un ')'")*/ }
+	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' error '{'  									{ /*save("no se esperaba nada entre un ')' y un '{'")*/ }
+	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' error OPT_ARGS 				 					{ /*save("se esperaba un '{'")*/ } 
+	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' error OPT_ARGS 				 			{ /*save("no se esperaba nada entre un '{' y los argumentos")*/ } 
+	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' error '}'   				 			{ /*save("se esperaban argumentos")*/ }
+	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS error '}'   				{ /*save("no se esperaba nada entre los argumentos y un '}'")*/ } 
 	;
 
 DECLARACION_LOGICA: 
@@ -259,35 +260,31 @@ SINO_P:
 	;
 
 DECLARACION_PARA: 
-	  PARA '(' PARA_1';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| error PARA '(' PARA_1';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| error '(' PARA_1';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA error '(' PARA_1';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA error PARA_1';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' error PARA_1';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' error ';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 error ';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 error PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 ';' error PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 ';' error ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 ';' PARA_2 error ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 ';' PARA_2 error PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 ';' PARA_2 ';' error PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 ';' PARA_2 ';' error ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 ';' PARA_2 ';' PASO error  ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 ';' PARA_2 ';' PASO error OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 ';' PARA_2 ';' '{' PASO error OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 ';' PARA_2 ';' '{' PASO error '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
-	| PARA '(' PARA_1 ';' PARA_2 ';' '{' PASO OPT_ARGS error '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/ }
+	  PARA '(' PARA_1 ';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| error PARA '(' PARA_1 ';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| error '(' PARA_1 ';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA error '(' PARA_1 ';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA error PARA_1 ';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' error PARA_1 ';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' error ';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 error ';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 error PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' PARA_2 error PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' PARA_2 ';' error PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' PARA_2 ';' error ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' PARA_2 ';' PASO error  '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' PARA_2 ';' PASO error OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' PARA_2 ';' PASO '{' error OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' PARA_2 ';' PASO '{' error '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' PARA_2 ';' PASO '{'  OPT_ARGS error '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/; }
 	;
 
 PARA_1:
-	  ID_EL
-	| ID_EL '=' V_ENTERO
+	  ENTERO ID_EL '=' V_ENTERO
+	| REAL ID_EL '=' REAL
 	| ID_EL '=' V_ENTERO
 	| ID_EL '=' REAL
-	| ENTERO ID_EL '=' V_ENTERO
-	| REAL ID_EL '=' REAL
+	| ID_EL
 	;
 
 PARA_2:
@@ -299,6 +296,8 @@ PARA_2:
 	| ID_EL '>' V_REAL
 	| ID_EL '<' V_ENTERO
 	| ID_EL '<' V_REAL
+	| error '>' {  }
+	| error '<' {  }
 	;
 
 PASO: 
@@ -320,14 +319,59 @@ PASO:
 
 DECLARACION_MIENTRAS_QUE:
 	  MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| error MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| error '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE error '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE error DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE '(' error DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE '(' error OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE '(' DECLARACION_LOGICA error OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE '(' DECLARACION_LOGICA error ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' error '{' OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' error OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' error OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' error '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS error '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
 	;						
 
 DECLARACION_HACER_HASTA:
 	  HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| error HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| error '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER error '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER error OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' error OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' error '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' OPT_ARGS error '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' OPT_ARGS error MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' OPT_ARGS '}' error MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' OPT_ARGS '}' error '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE error '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE error DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' error DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' error OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA error OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA error ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
 	;
 
 DECLARACION_DEPENDIENDO_DE:
 	  DEPENDIENDO_DE '(' ID_EL ')' '{' OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| error DEPENDIENDO_DE '(' ID_EL ')' '{' OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| error '(' ID_EL ')' '{' OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE error '(' ID_EL ')' '{' OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE error ID_EL ')' '{' OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE '(' error ID_EL ')' '{' OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE '(' error ')' '{' OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE '(' ID_EL error ')' '{' OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE '(' ID_EL error '{' OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE '(' ID_EL ')' error '{' OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE '(' ID_EL ')' error OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE '(' ID_EL ')' '{' error OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE '(' ID_EL ')' '{' error '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE '(' ID_EL ')' '{' OPT_CASOS error '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
 	;
 
 OPT_CASOS:
@@ -355,10 +399,22 @@ OPT_CASO:
 
 DECLARACION_LLAMAR_FUN: 
 	  DECLARACION_USAR_FUN ';'	{ /*printf("\nMNG -> DECLARACION_LLAMAR_FUN")*/ }
+	| error DECLARACION_USAR_FUN ';'	{ /*printf("\nMNG -> DECLARACION_LLAMAR_FUN")*/ }
+	| error ';'	{ /*printf("\nMNG -> DECLARACION_LLAMAR_FUN")*/ }
+	| DECLARACION_USAR_FUN error ';'	{ /*printf("\nMNG -> DECLARACION_LLAMAR_FUN")*/ }
 	;
 
 DECLARACION_ASIGNAR_A_VAR: 
 	  ID_EL ASIGNAR_EL VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| PARAM
+	| error PARAM
+	| error ID_EL ASIGNAR_EL VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| error ASIGNAR_EL VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| ID_EL error ASIGNAR_EL VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| ID_EL error VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| ID_EL ASIGNAR_EL error VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| ID_EL ASIGNAR_EL error ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| ID_EL ASIGNAR_EL VAR_1 error ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
 	;
 
 VAR_1: 
@@ -453,7 +509,8 @@ char** str_split(char* a_str, const char a_delim)
 }
 
 void yyerror(char *s) { 
-    char** split = str_split(s, ',');
+		//printf("%s", s);
+		char** split = str_split(s, ',');
     char unexpected[30];
     strcpy(unexpected, split[1]+12);
     if(split[2]==NULL){
