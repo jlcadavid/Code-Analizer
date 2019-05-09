@@ -36,6 +36,7 @@ extern int yylineno;
 %token BOOLEANO
 
 // TOKENS FOR PALABRAS CLAVE
+%token INCLUIR
 %token SI
 %token SINO
 %token PARA
