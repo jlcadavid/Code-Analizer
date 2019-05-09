@@ -35,7 +35,7 @@ VERDADERO	True|true
 FALSO		False|false
 %%
 
-"#include"	{ fprintf(yyout, "INCLUIR")				return INCLUDE;			}	
+"#include"	{ fprintf(yyout, "INCLUIR");				return INCLUDE;			}	
 "void"		{ fprintf(yyout, " VOID "); 				return VACIO; 			}
 {VERDADERO}	{ fprintf(yyout, " true ");		 		return VERDADERO;		}
 {FALSO}		{ fprintf(yyout, " false ");		 		return FALSO;			}
