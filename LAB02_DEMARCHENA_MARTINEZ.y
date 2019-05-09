@@ -280,11 +280,11 @@ DECLARACION_PARA:
 	;
 
 PARA_1:
-	  ENTERO ID_EL '=' V_ENTERO
-	| REAL ID_EL '=' REAL
-	| ID_EL '=' V_ENTERO
-	| ID_EL '=' REAL
-	| ID_EL
+	  ENTERO ID_EL '=' V_ENTERO 
+	| REAL ID_EL '=' REAL 
+	| ID_EL '=' V_ENTERO 
+	| ID_EL '=' REAL 
+	| ID_EL 
 	;
 
 PARA_2:
@@ -415,6 +415,7 @@ DECLARACION_ASIGNAR_A_VAR:
 	| ID_EL ASIGNAR_EL error VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
 	| ID_EL ASIGNAR_EL error ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
 	| ID_EL ASIGNAR_EL VAR_1 error ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| error PARA {  }
 	;
 
 VAR_1: 
@@ -512,11 +513,15 @@ void yyerror(char *s) {
 		//printf("%s", s);
 		char** split = str_split(s, ',');
     char unexpected[30];
+    char expected[30];
     strcpy(unexpected, split[1]+12);
-    if(split[2]==NULL){
-        
-    }
-    printf("\nLinea: %d: ERROR SINTACTICO, no se esperaba %s", yylineno, unexpected); 
+    if(split[2] != NULL){
+			strcpy(expected, split[2]+11);
+	    printf("\nLinea: %d: ERROR SINTACTICO, no se esperaba %s, se esperaba %s", yylineno, unexpected, expected);
+	  }else{
+
+	    printf("\nLinea: %d: ERROR SINTACTICO, no se esperaba %s", yylineno, unexpected);
+		} 
 		err_c++;
 }
 

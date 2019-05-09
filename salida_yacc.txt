@@ -1,9 +1,8 @@
 
 Input: TEST_FILES/script.c
 
-Linea: 13: ERROR SINTACTICO, no se esperaba CASO
-Linea: 19: ERROR SINTACTICO, no se esperaba PARA
+Linea: 13: ERROR SINTACTICO, no se esperaba CASO, se esperaba '{'
+Linea: 19: ERROR SINTACTICO, no se esperaba PARA, se esperaba ';'
 Linea: 19: ERROR SINTACTICO, no se esperaba '-'
-ping ping
-Linea: 35: ERROR SINTACTICO, no se esperaba '}'
-Linea: 49: ERROR SINTACTICO, no se esperaba '}'
+Linea: 35: ERROR SINTACTICO, no se esperaba '}', se esperaba ';'
+Linea: 49: ERROR SINTACTICO, no se esperaba '}', se esperaba $end
