@@ -26,7 +26,7 @@ extern int yylineno;
 %token V_CADENA
 %token V_ENTERO
 %token V_REAL
-//%token mLibrary
+%token LIBRERIA
 
 // TOKENS PARA TIPOS
 %token VACIO
