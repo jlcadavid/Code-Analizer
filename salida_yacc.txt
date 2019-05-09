@@ -1,5 +1,5 @@
 
-Input: TEST_FILES/script.c
+Input: ./TEST_FILES/script.c
 
 Linea: 13: ERROR SINTACTICO, no se esperaba CASO, se esperaba '{'
 Linea: 19: ERROR SINTACTICO, no se esperaba PARA, se esperaba ';'
