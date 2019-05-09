@@ -1,8 +1,5 @@
 
-Input: TEST_FILES/script.c
+Input: TEST_FILES/test.c
 
-Linea: 13: ERROR SINTACTICO, no se esperaba CASO, se esperaba '{'
-Linea: 19: ERROR SINTACTICO, no se esperaba PARA, se esperaba ';'
-Linea: 35: ERROR SINTACTICO, no se esperaba '}', se esperaba ';'
-Linea: 45: ERROR SINTACTICO, no se esperaba SINO
-Linea: 49: ERROR SINTACTICO, no se esperaba '}', se esperaba $end
+Linea 2: ERROR SINTACTICO, no se esperaba ID, se esperaba '('
+Linea 7: ERROR SINTACTICO, no se esperaba '}', se esperaba MIENTRAS_QUE

@@ -94,7 +94,7 @@ extern int yylineno;
 
 PROGRAM_START: 
 	  TIPO_FUN NOMBRE_FUN '(' OPT_PARAMS ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> PROGRAM_START")*/ }  
-	| TIPO_FUN NOMBRE_FUN '(' OPT_PARAMS ')' '{' error { yyclearin; }  
+	| TIPO_FUN NOMBRE_FUN '(' OPT_PARAMS ')' '{' OPT_ARGS error { yyclearin; }  
 	;
 
 NOMBRE_FUN: 
@@ -135,8 +135,8 @@ OPT_PARAM:
 	;
 
 OPT_ARGS: 
-	  ARG OPT_ARG 		{ /*printf("\nMNG -> OPT_ARGS");*/ }
-	| /* VACIO */ 		{ /*printf("\nMNG -> OPT_ARGS")*/ }	
+	  ARG OPT_ARG 		
+	| /* VACIO */ 			
 	;
 
 ARG: 
@@ -153,11 +153,11 @@ ARG:
 OPT_ARG: 
 	    ARG OPT_ARG 	{ /*printf("\nMNG -> OPT_ARG")*/ }
 	  | /* VACIO */		{ /*printf("\nMNG -> OPT_ARG");*/ }
-      ;
+    ;
 
 DECLARACION_SI: 
 	  SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS '}' DECLARACION_SINO 		 
-	| error SI  																									{ /*save("no se esperaba nada antes de la palabra clave 'if'")*/ }
+	| error SI 																									{  }
 	| error '(' 																								{ /*save("se esperaba la palabra clave 'if'")*/ }	
 	| SI error '(' 																								{ /*save("no se esperaba nada entre un 'if' y un '('")*/ }
 	| SI error 																								{ /*save("no se esperaba nada entre un 'if' y un '('")*/ }
@@ -165,6 +165,7 @@ DECLARACION_SI:
 	| SI '(' error DECLARACION_LOGICA 																			{ /*save("no se esperaba nada entre un '(' y una expresion logica")*/ }
 	| SI '(' error OPT_DECLARACION_LOGICA 																		{ /*save("se esperaba una expresion logica")*/ } 
 	| SI '(' DECLARACION_LOGICA  error OPT_DECLARACION_LOGICA 													{ /*save("no se esperaba nada entre una expresion logica y una expresion logica")*/ }
+	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error 																					{ /*save("se esperaba un '('")*/ }
 	| SI '(' DECLARACION_LOGICA error ')' 																	{ /*save("se esperaba una expresion logica")*/ }
 	| SI '(' DECLARACION_LOGICA error 																	{ /*save("se esperaba una expresion logica")*/ }
 	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error ')' 											{ /*save("no se esperaba nada entre una expresion logica y un ')'")*/ }
@@ -178,7 +179,7 @@ DECLARACION_SI:
 	;
 
 DECLARACION_LOGICA: 
-	  OPT_NEG OPT_PARS_L { /*printf("\nMNG -> DECLARACION_LOGICA")*/ }
+	  OPT_NEG OPT_PARS_L
 	;
 
 OPT_NEG: 
@@ -253,13 +254,11 @@ Y_O:
 	;
 
 DECLARACION_SINO: 
-	  SINO SINO_P	{ /*printf("\nMNG -> DECLARACION_SINO")*/ }
-	| /* VACIO */	{ /*printf("\nMNG -> DECLARACION_SINO")*/ }
-	;
-
-SINO_P: 
-	  DECLARACION_SI 			{ /*printf("\nMNG -> SINO_P")*/ }
-	| '{' OPT_ARGS '}'	{ /*printf("\nMNG -> SINO_P")*/ }
+	  SINO DECLARACION_SI	
+	| SINO '{' OPT_ARGS '}'
+	| SINO '{' OPT_ARGS error	
+	| SINO error OPT_ARGS	
+	| /* VACIO */	
 	;
 
 DECLARACION_PARA: 
@@ -280,6 +279,7 @@ DECLARACION_PARA:
 	| PARA '(' PARA_1 ';' PARA_2 ';' error ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
 	| PARA '(' PARA_1 ';' PARA_2 ';' PASO ')' '{' error '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
 	| PARA '(' PARA_1 ';' PARA_2 ';' PASO ')' '{' OPT_ARGS error '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/; }
+	| PARA '(' PARA_1 ';' PARA_2 ';' PASO ')' '{' OPT_ARGS error	{ /*printf("\nMNG -> DECLARACION_PARA")*/; }
 	;
 
 PARA_1:
@@ -337,27 +337,29 @@ DECLARACION_MIENTRAS_QUE:
 	| MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' error OPT_ARGS '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
 	| MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' error '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
 	| MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS error '}' { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
+	| MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS error { /*printf("\nMNG -> DECLARACION_MIENTRAS_QUE")*/ }
 	;						
 
 DECLARACION_HACER_HASTA:
-	  HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| error HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| error '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER error '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER error OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' error OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' error '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' OPT_ARGS error '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' OPT_ARGS error MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' OPT_ARGS '}' error MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' OPT_ARGS '}' error '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE error '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE error DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' error DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' error OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA error OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA error ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
-	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA")*/ }
+	  HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| error HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| error '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER error '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER error OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' error OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' error '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' OPT_ARGS error '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' OPT_ARGS error MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' OPT_ARGS '}' error MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' OPT_ARGS '}' error '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE error '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE error DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' error DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' error OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA error OPT_DECLARACION_LOGICA ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/  }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA error ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error ')' { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
+	| HACER '{' OPT_ARGS '}' MIENTRAS_QUE '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error  { /*printf("\nMNG -> DECLARACION_HACER_HASTA");*/ }
 	;
 
 DECLARACION_DEPENDIENDO_DE:
@@ -372,9 +374,11 @@ DECLARACION_DEPENDIENDO_DE:
 	| DEPENDIENDO_DE '(' ID_EL error '{' OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
 	| DEPENDIENDO_DE '(' ID_EL ')' error '{' OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
 	| DEPENDIENDO_DE '(' ID_EL ')' error OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE '(' ID_EL ')' error { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
 	| DEPENDIENDO_DE '(' ID_EL ')' '{' error OPT_CASOS '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
 	| DEPENDIENDO_DE '(' ID_EL ')' '{' error '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
 	| DEPENDIENDO_DE '(' ID_EL ')' '{' OPT_CASOS error '}' { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
+	| DEPENDIENDO_DE '(' ID_EL ')' '{' OPT_CASOS error { /*printf("\nMNG -> DECLARACION_DEPENDIENDO_DE")*/ }
 	;
 
 OPT_CASOS:
@@ -407,32 +411,23 @@ DECLARACION_LLAMAR_FUN:
 	| DECLARACION_USAR_FUN error ';'	{ /*printf("\nMNG -> DECLARACION_LLAMAR_FUN")*/ }
 	;
 
-DECLARACION_ASIGNAR_A_VAR: 
-	  ID_EL ASIGNAR_EL VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
-	| PARAM
-	| error PARAM
-	| error ID_EL ASIGNAR_EL VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
-	| error ASIGNAR_EL VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
-	| ID_EL error ASIGNAR_EL VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
-	| ID_EL error VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
-	| ID_EL ASIGNAR_EL error VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
-	| ID_EL ASIGNAR_EL error ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
-	| ID_EL ASIGNAR_EL VAR_1 error ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
-	| ID_EL ASIGNAR_EL VAR_1 error	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+DECLARACION_ASIGNAR_A_VAR:
+	  TIPO ID_EL OPTS_ID';'
+	| TIPO ID_EL ASIGNAR_EL PARAM_FUN VAR_2 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| ID_EL ASIGNAR_EL PARAM_FUN VAR_2 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| PARAM ';'
+	| error
 	;
 
-VAR_1: 
-	  DECLARACION_USAR_VAR 	{ /*printf("\nMNG -> VAR_1")*/ }
-	| PARAM_FUN 			{ /*printf("\nMNG -> VAR_1")*/ }
-	;
-
-DECLARACION_USAR_VAR: 
-	  PARAM_FUN VAR_2	{ /*printf("\nMNG -> DECLARACION_USAR_VAR")*/ }
+OPTS_ID: 
+	  ',' ID_EL OPTS_ID
+	|
 	;
 
 VAR_2: 
-	  OP_L_O PARAM_FUN 			{ /*printf("\nMNG -> VAR_2")*/ }
-	| OP_L_A PARAM_FUN MAS_MAT	{ /*printf("\nMNG -> VAR_2")*/ }
+	 	OPERADOR_ARITMETICO PARAM_FUN MAS_MAT 	{ /*printf("\nMNG -> VAR_2")*/ }
+	| OP_L_O PARAM_FUN  			{ /*printf("\nMNG -> VAR_2")*/ }
+	|
 	;
 
 OP_L_O: 
@@ -441,12 +436,8 @@ OP_L_O:
 	| '!'				{ /*printf("\nMNG -> OP_L_O")*/ }
 	;
 
-OP_L_A: 
-	  OPERADOR_ARITMETICO	{ /*printf("\nMNG -> OP_L_A")*/ }
- 	;
-
 MAS_MAT: 
-	  OP_L_A PARAM_FUN MAS_MAT 	{ /*printf("\nMNG -> MAS_MAT")*/ }
+	  OPERADOR_ARITMETICO PARAM_FUN MAS_MAT 	{ /*printf("\nMNG -> MAS_MAT")*/ }
 	| /**/ 						{ /*printf("\nMNG -> MAS_MAT")*/ }
 	;
 
@@ -520,10 +511,9 @@ void yyerror(char *s) {
     strcpy(unexpected, split[1]+12);
     if(split[2] != NULL){
 			strcpy(expected, split[2]+11);
-	    printf("\nLinea: %d: ERROR SINTACTICO, no se esperaba %s, se esperaba %s", yylineno, unexpected, expected);
+	    printf("\nLinea %d: ERROR SINTACTICO, no se esperaba %s, se esperaba %s", yylineno, unexpected, expected);
 	  }else{
-
-	    printf("\nLinea: %d: ERROR SINTACTICO, no se esperaba %s", yylineno, unexpected);
+	    printf("\nLinea: %d ERROR SINTACTICO, no se esperaba %s", yylineno, unexpected);
 		} 
 		err_c++;
 }
