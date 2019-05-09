@@ -1,12 +1,38 @@
- VOID  MAIN  (  )  { 
-	 SI  ID(jaime)  { 
+ INCLUIR  LIBRERIA(<stdio.h>) 
+ VOID  MAIN  (  ) 
+ { 
+	 ENTERO  ID(i)  ,  ID(x)  ; 
+	 REAL  ID(media)  ,  ID(media2)  ; 
+	 ID(media)  =  INT(0)  ; 
+	 PARA  (  ID(i)  =  INT(0)  ;  ID(i)  <  INT(10)  ;  ID(i)  +  +  ) 
+	 { 
+		 LEER  (  STRING("%d")  ,  ID(x)  )  ; 
+		 ID(media)  +  =  ID(x)  ; 
+	 }  ; 
+	 ID(media)  /  =  INT(10)  ; 
+	 ESCRIBIR  (  STRING("%f")  ,  ID(media)  )  ; 
+	 ID(i)  =  INT(0)  ;  ID(media2)  =  INT(0)  ; 
+	 MIENTRAS QUE  (  ID(i)  <  INT(10)  ) 
+	 { 
+		 LEER  (  STRING("%d")  ,  ID(x)  )  ; 
+		 ID(i)  +  +  ; 
+		 ID(media2)  =  ID(media2)  +  ID(x)  ; 
+	 }  ; 
+	 ID(media2)  =  ID(media2)  /  INT(10)  ; 
+	 ESCRIBIR  (  STRING("%f")  ,  ID(media)  )  ; 
+	 ID(i)  =  INT(0)  ; 
+	 ID(media2)  =  INT(0)  ; 
+	 HACER  { 
+		 LEER  (  STRING("%d")  ,  ID(x)  )  ; 
+		 ID(i)  +  +  ; 
+		 ID(media2)  =  ID(media2)  +  ID(x)  ; 
+	 }  MIENTRAS QUE  (  ID(i)  <  INT(10)  )  ; 
+	 ID(media2)  =  ID(media2)  /  INT(10)  ; 
+	 ESCRIBIR  (  STRING("%f")  ,  ID(media)  )  ; 
+ } 	
 
-	 }  SINO  { 
-		 ESCRIBIR  (  STRING("")  )  ; 
-	 } 
- } 
 
 ids:
-ID: jaime	
+ID: i	ID: x	ID: media	ID: media2	
 
 errores:

@@ -26,7 +26,7 @@ extern int yylineno;
 %token V_CADENA
 %token V_ENTERO
 %token V_REAL
-//%token mLibrary
+%token LIBRERIA
 
 // TOKENS PARA TIPOS
 %token VACIO
@@ -36,6 +36,7 @@ extern int yylineno;
 %token BOOLEANO
 
 // TOKENS FOR PALABRAS CLAVE
+%token INCLUIR
 %token SI
 %token SINO
 %token PARA
@@ -93,9 +94,14 @@ extern int yylineno;
 /* LENGUAJE PARECIDO A C */
 
 PROGRAM_START: 
-	  TIPO_FUN NOMBRE_FUN '(' OPT_PARAMS ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> PROGRAM_START")*/ }  
-	| TIPO_FUN NOMBRE_FUN '(' OPT_PARAMS ')' '{' OPT_ARGS error { yyclearin; }  
+	  OPT_LIB TIPO_FUN NOMBRE_FUN '(' OPT_PARAMS ')' '{' OPT_ARGS '}' { /*printf("\nMNG -> PROGRAM_START")*/ }  
+	| OPT_LIB TIPO_FUN NOMBRE_FUN '(' OPT_PARAMS ')' '{' OPT_ARGS error { yyclearin; }  
 	;
+
+OPT_LIB:
+      INCLUIR LIBRERIA OPT_LIB
+    |
+    ;
 
 NOMBRE_FUN: 
 	  MAIN 		{ /*printf("\nMNG -> MAIN")*/ }
@@ -135,10 +141,13 @@ OPT_PARAM:
 	;
 
 OPT_ARGS: 
-	  ARG OPT_ARG 		
+	  ARG OPT_SM OPT_ARG 		
 	| /* VACIO */ 			
 	;
-
+OPT_SM:
+      ';'
+    |
+    ;
 ARG: 
 	  DECLARACION_SI 				{ /*printf("\nMNG -> ARG")* 				YA*/ }
 	| DECLARACION_PARA 				{ /*printf("\nMNG -> ARG")				YA*/ }
@@ -151,7 +160,7 @@ ARG:
 	;
 
 OPT_ARG: 
-	    ARG OPT_ARG 	{ /*printf("\nMNG -> OPT_ARG")*/ }
+	    ARG OPT_SM OPT_ARG 	{ /*printf("\nMNG -> OPT_ARG")*/ }
 	  | /* VACIO */		{ /*printf("\nMNG -> OPT_ARG");*/ }
     ;
 
@@ -415,8 +424,10 @@ DECLARACION_ASIGNAR_A_VAR:
 	  TIPO ID_EL OPTS_ID';'
 	| TIPO ID_EL ASIGNAR_EL PARAM_FUN VAR_2 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
 	| ID_EL ASIGNAR_EL PARAM_FUN VAR_2 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| ID_EL ASIGNAR_MATH PARAM_FUN VAR_2 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| ID_EL INC_DEC ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
+	| INC_DEC ID_EL ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
 	| PARAM ';'
-	| error
 	;
 
 OPTS_ID: 
@@ -446,6 +457,17 @@ ASIGNAR_EL:
 	| L_ERROR { }
 	;
 
+ASIGNAR_MATH:
+      '+' '='
+    | '-' '='
+    | '*' '='
+    | '/' '='
+    ;
+
+INC_DEC:
+      '+' '+'
+    | '-' '-'
+    ;
 %% 
 
 extern int yylex();

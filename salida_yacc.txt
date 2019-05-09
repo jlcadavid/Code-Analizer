@@ -1,5 +1,4 @@
 
-Input: TEST_FILES/test.c
+Input: TEST_FILES/prueba.c
 
-Linea 2: ERROR SINTACTICO, no se esperaba ID, se esperaba '('
-Linea 7: ERROR SINTACTICO, no se esperaba '}', se esperaba MIENTRAS_QUE
+ARCHIVO SIN ERRORES
