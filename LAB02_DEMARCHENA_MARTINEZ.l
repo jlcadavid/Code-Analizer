@@ -48,7 +48,7 @@ FALSO		False|false
 "case"		{ fprintf(yyout, " CASO "); 				return CASO; 			}
 "default"	{ fprintf(yyout, " POR DEFECTO ");			return POR_DEFECTO; 		}
 "break"		{ fprintf(yyout, " DETENER "); 				return INTERRUMPIR; 		}
-"bool"		{ fprintf (yyout, " BOOLEANO ");	 		return BOOLEANO;		}
+"bool"		{ fprintf(yyout, " BOOLEANO ");	 			return BOOLEANO;		}
 "int"		{ fprintf(yyout, " ENTERO "); 				return ENTERO; 			}
 "float"		{ fprintf(yyout, " REAL "); 				return REAL; 			}
 "char"		{ fprintf(yyout, " CARACTER "); 			return CARACTER; 		}
