@@ -160,11 +160,13 @@ DECLARACION_SI:
 	| error SI  																									{ /*save("no se esperaba nada antes de la palabra clave 'if'")*/ }
 	| error '(' 																								{ /*save("se esperaba la palabra clave 'if'")*/ }	
 	| SI error '(' 																								{ /*save("no se esperaba nada entre un 'if' y un '('")*/ }
+	| SI error 																								{ /*save("no se esperaba nada entre un 'if' y un '('")*/ }
 	| SI error DECLARACION_LOGICA 																					{ /*save("se esperaba un '('")*/ }
 	| SI '(' error DECLARACION_LOGICA 																			{ /*save("no se esperaba nada entre un '(' y una expresion logica")*/ }
 	| SI '(' error OPT_DECLARACION_LOGICA 																		{ /*save("se esperaba una expresion logica")*/ } 
 	| SI '(' DECLARACION_LOGICA  error OPT_DECLARACION_LOGICA 													{ /*save("no se esperaba nada entre una expresion logica y una expresion logica")*/ }
 	| SI '(' DECLARACION_LOGICA error ')' 																	{ /*save("se esperaba una expresion logica")*/ }
+	| SI '(' DECLARACION_LOGICA error 																	{ /*save("se esperaba una expresion logica")*/ }
 	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error ')' 											{ /*save("no se esperaba nada entre una expresion logica y un ')'")*/ }
 	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA error '{' 											{ /*save("se esperaba un ')'")*/ }
 	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' error '{'  									{ /*save("no se esperaba nada entre un ')' y un '{'")*/ }
@@ -172,6 +174,7 @@ DECLARACION_SI:
 	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' error OPT_ARGS 				 			{ /*save("no se esperaba nada entre un '{' y los argumentos")*/ } 
 	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' error '}'   				 			{ /*save("se esperaban argumentos")*/ }
 	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS error '}'   				{ /*save("no se esperaba nada entre los argumentos y un '}'")*/ } 
+	| SI '(' DECLARACION_LOGICA OPT_DECLARACION_LOGICA ')' '{' OPT_ARGS error   				{ /*save("no se esperaba nada entre los argumentos y un '}'")*/ } 
 	;
 
 DECLARACION_LOGICA: 
@@ -415,7 +418,7 @@ DECLARACION_ASIGNAR_A_VAR:
 	| ID_EL ASIGNAR_EL error VAR_1 ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
 	| ID_EL ASIGNAR_EL error ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
 	| ID_EL ASIGNAR_EL VAR_1 error ';'	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
-	| error PARA {  }
+	| ID_EL ASIGNAR_EL VAR_1 error	{ /*printf("\nMNG -> DECLARACION_ASGINAR_A_VAR")*/ }
 	;
 
 VAR_1: 
