@@ -269,14 +269,14 @@ DECLARACION_PARA:
 	| PARA '(' error ';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
 	| PARA '(' PARA_1 error ';' PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
 	| PARA '(' PARA_1 error PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
-	| PARA '(' PARA_1 ';' PARA_2 error PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' error PARA_2 ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' error ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' PARA_2 error ';' PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' PARA_2 error PASO  ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
 	| PARA '(' PARA_1 ';' PARA_2 ';' error PASO ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
 	| PARA '(' PARA_1 ';' PARA_2 ';' error ')' '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
-	| PARA '(' PARA_1 ';' PARA_2 ';' PASO error  '{' OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
-	| PARA '(' PARA_1 ';' PARA_2 ';' PASO error OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
-	| PARA '(' PARA_1 ';' PARA_2 ';' PASO '{' error OPT_ARGS '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
-	| PARA '(' PARA_1 ';' PARA_2 ';' PASO '{' error '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
-	| PARA '(' PARA_1 ';' PARA_2 ';' PASO '{'  OPT_ARGS error '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/; }
+	| PARA '(' PARA_1 ';' PARA_2 ';' PASO ')' '{' error '}'	{ /*printf("\nMNG -> DECLARACION_PARA");*/ }
+	| PARA '(' PARA_1 ';' PARA_2 ';' PASO ')' '{' OPT_ARGS error '}'	{ /*printf("\nMNG -> DECLARACION_PARA")*/; }
 	;
 
 PARA_1:
@@ -301,17 +301,17 @@ PARA_2:
 	;
 
 PASO: 
-	  '+' '+' ID_EL 	{ /*printf("\nMNG -> PASO")*/ }
-	| '-' '-' ID_EL 	{ /*printf("\nMNG -> PASO")*/ }
-	| ID_EL '+' '+'	{ /*printf("\nMNG -> PASO")*/ }
-	| ID_EL '-' '-'	{ /*printf("\nMNG -> PASO")*/ }
+	  ID_EL ASIGNAR_EL ID_EL OPERADOR_ARITMETICO V_ENTERO
+	| ID_EL ASIGNAR_EL ID_EL OPERADOR_ARITMETICO V_REAL
+	| ID_EL ASIGNAR_EL ID_EL OPERADOR_ARITMETICO ID_EL
 	| ID_EL ASIGNAR_EL ID_EL '+' '+'
 	| ID_EL ASIGNAR_EL ID_EL '-' '-'
 	| ID_EL ASIGNAR_EL '+' '+' ID_EL 
 	| ID_EL ASIGNAR_EL '-' '-' ID_EL 
-	| ID_EL ASIGNAR_EL ID_EL OPERADOR_ARITMETICO ID_EL
-	| ID_EL ASIGNAR_EL ID_EL OPERADOR_ARITMETICO V_ENTERO
-	| ID_EL ASIGNAR_EL ID_EL OPERADOR_ARITMETICO V_REAL
+	| '+' '+' ID_EL 	{ /*printf("\nMNG -> PASO")*/ }
+	| '-' '-' ID_EL 	{ /* printf("COLEEEE"); */}
+	| ID_EL '+' '+'	{ /*printf("\nMNG -> PASO")*/ }
+	| ID_EL '-' '-'	{ /*printf("\nMNG -> PASO")*/ }
 	;
 
 
@@ -517,6 +517,7 @@ void yyerror(char *s) {
         
     }
     printf("\nLinea: %d: ERROR SINTACTICO, no se esperaba %s", yylineno, unexpected); 
+		err_c++;
 }
 
 void print(char *t, int o){
@@ -552,6 +553,9 @@ int main(int argc, char *argv[]) {
 	print_in_lex();
 	fclose(lex_out_file);
 	fclose(fp);
+	if(err_c == 0){
+		printf("\nARCHIVO SIN ERRORES");
+	}
 	return(0);
 }
 

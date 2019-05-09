@@ -38,5 +38,7 @@ else
     echo "-------------------------------------------------------------------------"
     echo "Generando ejecutable $(gcc lex.yy.c y.tab.c -o LAB02_DEMARCHENA_MARTINEZ.out)"
     echo "-------------------------------------------------------------------------"
-    echo "Generando salidas de yacc & lex $(./LAB02_DEMARCHENA_MARTINEZ.out $input)"
+    echo "Generando salidas de yacc & lex $(./LAB02_DEMARCHENA_MARTINEZ.out $input > $output)"
+    echo "$(cat salida_lex.txt)"
+    echo "$(cat $output)"
 fi
